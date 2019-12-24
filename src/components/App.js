@@ -1,6 +1,6 @@
 import React from 'react';
-import '../assets/scss/index.scss';
 import Router from '../Router/Router';
+import 'typeface-roboto';
 
 const App = () => (
   <Router/>

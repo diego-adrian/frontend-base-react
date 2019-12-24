@@ -5,7 +5,7 @@ import * as Routes from './components';
 const App = () => (
   <Router>
     <Switch>
-      <Route exact path="/login" component={Routes.Login}></Route>
+      <Route path="/login" component={Routes.Login}></Route>
     </Switch>
   </Router>
 );
