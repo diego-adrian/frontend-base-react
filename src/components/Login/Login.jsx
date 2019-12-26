@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import { Container, Grid, Button, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Footer from '../../layout/Footer';
+import Auth from './auth';
 import './Login.scss';
 
 const useStyles = makeStyles(theme => ({
@@ -15,6 +16,12 @@ const useStyles = makeStyles(theme => ({
 
 const Login = () => {
   const classes = useStyles();
+
+  const loginOpenid = async () => {
+    console.log(Auth);
+    await Auth.getCode();
+  };
+
   return (
     <Fragment>
       <div className="app-login">
@@ -23,7 +30,7 @@ const Login = () => {
           <Grid container className={classes.root} spacing={0}>
             <Grid item container direction="column" className={classes.ciudadaniaDigital} md={12} lg={12} xs={12}>
               <Paper style={{ boxShadow: 'none'}} className="app-login__ciudadaniaDigital"></Paper>
-              <Button color="primary" className="app-login__boton">Ingresar con ciudadanía Digital</Button>
+              <Button color="primary" onClick={loginOpenid} className="app-login__boton">Ingresar con ciudadanía Digital</Button>
             </Grid>
           </Grid>
         </Container>
