@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Login ciudadanía</title>
+  <script type="text/javascript">
+    if (/MSIE \d|Trident.*rv:/.test(navigator.userAgent) || !window.fetch) {
+      var script = document.createElement('script');
+      script.src = 'fetch.js';
+      document.body.insertBefore(script, document.body.firstChild);
+    }
+  </script>
+  <script src="./config.js"></script>
+</head>
+
+<body>
+  <script type="text/javascript">
+    (function () {
+      var params = window.location.search.replace('?', '');
+      params = params.split('&');
+      if (params[0].split('=')[0] === 'code') {
+        var code = params[0].split('=')[1];
+        var state = params[1].split('=')[1];
+        var session_state = params[2].split('=')[1];
+        var url = config.urlAutorizar;
+        url += '?code=' + code;
+        url += '&state=' + state;
+        url += '&session_state=' + session_state;
+        fetch(url)
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (response) {
+            console.log('--------EEEEEEEEEE----------------------------');
+            console.log(response);
+            console.log('------------------------------------');
+            var data = response;
+            if (data.url) {
+              window.location = data.url;
+              window.localStorage.setItem(config.appName + '_error', JSON.stringify(data.mensaje));
+            } else {
+              window.localStorage.setItem(config.appName + '_menu', JSON.stringify(data.menu));
+              window.localStorage.setItem(config.appName + '_token', data.token);
+              window.localStorage.setItem(config.appName + '_sidenav', JSON.stringify(true));
+              window.localStorage.setItem(config.appName + '_permissions', JSON.stringify(data.permisos));
+              window.localStorage.setItem(config.appName + '_user', JSON.stringify(data.usuario));
+              window.location = config.urlHome + (data.redirect ? '#/' + data.redirect : '');
+            }
+          })
+          .catch(function (error) {
+            window.localStorage.setItem(config.appName + '_error', unescape(decodeURIComponent(error)));
+            window.location = config.urlLogin;
+          });
+      } else if (params[0].split('=')[0] === 'error' && params[0].split('=')[1] != 'login_required') {
+        var error = params[0].split('=')[1];
+        var error_description = params[1].split('=')[1];
+        window.localStorage.setItem(config.appName + '_error', unescape(decodeURIComponent(error_description)));
+        window.location = config.urlLogin;
+      } else {
+        window.location = config.urlLogin;
+      }
+    })();
+  </script>
+</body>
+
+</html>

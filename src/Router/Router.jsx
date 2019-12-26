@@ -6,6 +6,7 @@ const App = () => (
   <Router>
     <Switch>
       <Route path="/login" component={Routes.Login}></Route>
+      <Route path="/public/oauth/login.html"></Route>
     </Switch>
   </Router>
 );

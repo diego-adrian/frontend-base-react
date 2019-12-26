@@ -10,7 +10,7 @@ const Auth = {
         responseType: 'json'
       };
       const response = await axios(request);
-      window.location.href = response.data.url;
+      window.location.href = new URL(process.env.PUBLIC_URL, response.data.url);
     } catch (error) {
       console.error(error.message);
     }

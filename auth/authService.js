@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const moment = require('moment');
 const Issuer = require('openid-client').Issuer;
 const config = require('./config');
 
@@ -9,9 +10,6 @@ const config = require('./config');
  */
 
 module.exports = function authService () {
-  console.log('------------------------------------');
-  console.log(config.openId.client);
-  console.log('------------------------------------');
   const issuer = new Issuer(config.iss);
   const cliente = new issuer.Client(config.openId.client);
 
@@ -34,7 +32,32 @@ module.exports = function authService () {
     }
   }
 
+  async function authorizate (req, info) {
+    try {
+      let user;
+      let respuesta;
+      const params = cliente.callbackParams(req);
+      if (!params.state) {
+        throw new Error('Parámetro state es requerido.');
+      }
+      if (!params.code) {
+        throw new Error('Parámetro code es requerido.');
+      }
+      const resultadoState = {};
+      await cliente.authorizationCallback(cliente.redirect_uris[0], params, {
+        nonce: resultadoState.parametros.nonce,
+        state: resultadoState.state
+      });
+      console.log('------------------------------------');
+      console.log(9999999999999);
+      console.log('------------------------------------');
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
   return {
-    getCode
+    getCode,
+    authorizate
   }
 };

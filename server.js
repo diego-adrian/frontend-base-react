@@ -12,6 +12,20 @@ app.all('*', function (req, res, next) {
 });
 
 app.get('/', (req, res) => res.send('Servidor funcionando correctamente'));
+app.get('/authorization', (req, res) => {
+  try {
+    console.log('------------------------------------');
+    console.log(2222222222222222222);
+    console.log('------------------------------------');
+    const auth = AuthService();
+    const response = auth.authorizate();
+    console.log('------------EEEEEEE------------------------');
+    console.log(response);
+    console.log('------------------------------------');
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
 
 app.get('/auth', (req, res) => {
   try {
