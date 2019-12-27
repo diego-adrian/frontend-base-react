@@ -32,7 +32,11 @@ app.get('/auth', (req, res) => {
     const response = auth.getCode();
     if (response && response.url) {
       res.json({
-        url: response.url
+        finalizado: true,
+        mensaje: '',
+        datos: {
+          url: response.url
+        }
       });
     } else {
       throw new Error('Error al tratar de conectarse con ciudadanía digital');

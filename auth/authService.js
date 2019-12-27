@@ -49,7 +49,13 @@ module.exports = function authService () {
     try {
       let user;
       let respuesta;
+      console.log('---------------REQPQRASSSSS---------------------');
+      console.log(req);
+      console.log('------------------------------------');
       const params = cliente.callbackParams(req);
+      console.log('-----------PARAMSSSSSSs-------------------------');
+      console.log(params);
+      console.log('------------------------------------');
       if (!params.state) {
         throw new Error('Parámetro state es requerido.');
       }
@@ -57,11 +63,18 @@ module.exports = function authService () {
         throw new Error('Parámetro code es requerido.');
       }
       const resultadoState = {};
-      cliente.authorizationCallback(cliente.redirect_uris[0], params, {}).then((response) => {
+      cliente.authorizationCallback(cliente.redirect_uris[0], params, {
+        nonce: '',
+        state: params.state,
+      }).then((response) => {
         console.log('--------REPSONSEEEEEEEEEe----------------------------');
         console.log(response);
         console.log('------------------------------------');
         return response;
+      }).catch(err => {
+        console.log('-----------ERRRRRRRRROOOOOOO-------------------------');
+        console.log(err.message);
+        console.log('------------------------------------');
       })
     } catch (error) {
       console.error(error.message);

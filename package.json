@@ -45,6 +45,7 @@
   },
   "devDependencies": {
     "crypto": "^1.0.1",
+    "firebase": "^7.6.1",
     "node-sass": "^4.13.0",
     "nodemon": "^2.0.2"
   }
