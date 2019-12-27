@@ -1,7 +1,10 @@
 const crypto = require('crypto');
 const moment = require('moment');
 const Issuer = require('openid-client').Issuer;
+const firebase = require('./firebase');
 const config = require('./config');
+
+const ciudadaniaDigitalRef = firebase.database().ref('ciudadania-digital');
 
 /**
  * @function authService
@@ -29,10 +32,22 @@ module.exports = function authService () {
         nonce
       }, config.openId.client_params);
       const authorizeUrl = cliente.authorizationUrl(authorizationRequest);
-      return {
-        url: authorizeUrl,
-        codigo: state
+
+
+      const key = ciudadaniaDigitalRef.push().key;
+      const newCode = {
+        id: key,
+        state,
+        parametros: {
+          nonce
+        }
       };
+      ciudadaniaDigitalRef.child(key).update(newCode).then(() => {
+        return {
+          url: authorizeUrl,
+          codigo: state
+        };
+      });
     } catch (error) {
       console.error(error.message);
     }
