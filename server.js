@@ -1,6 +1,7 @@
 
 const express = require('express');
 const AuthService  = require('./auth/authService');
+const auth = AuthService();
 const app = express();
 
 const PORT = process.env.PORT || 4000;
@@ -14,14 +15,13 @@ app.all('*', function (req, res, next) {
 app.get('/', (req, res) => res.send('Servidor funcionando correctamente'));
 app.get('/authorization', (req, res) => {
   try {
-    console.log('------------------------------------');
-    console.log(2222222222222222222);
-    console.log('------------------------------------');
-    const auth = AuthService();
-    const response = auth.authorizate();
-    console.log('------------EEEEEEE------------------------');
+    const response = auth.authorizate(req, req.ipInfo);
+    console.log('-----------ABCDE-------------------------');
     console.log(response);
     console.log('------------------------------------');
+    res.json({
+      data: response
+    });
   } catch (error) {
     throw new Error(error.message);
   }
@@ -29,7 +29,6 @@ app.get('/authorization', (req, res) => {
 
 app.get('/auth', (req, res) => {
   try {
-    const auth = AuthService();
     const response = auth.getCode();
     if (response && response.url) {
       res.json({

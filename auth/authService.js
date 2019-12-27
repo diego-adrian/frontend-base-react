@@ -12,6 +12,12 @@ const config = require('./config');
 module.exports = function authService () {
   const issuer = new Issuer(config.iss);
   const cliente = new issuer.Client(config.openId.client);
+  cliente.CLOCK_TOLERANCE = 5;
+
+  /**
+   * El método permite obtener el state y nonce para iniciar el flujo oauth 2.0
+   * @returns {JSON}
+   */
 
   function getCode () {
     try {
@@ -32,7 +38,14 @@ module.exports = function authService () {
     }
   }
 
-  async function authorizate (req, info) {
+  /**
+   * El método permite realizar el intercambio del code por el id_token y access_token
+   * @param {object} req
+   * @param {object} info
+   * @returns {JSON}
+   */
+
+  function authorizate (req, info) {
     try {
       let user;
       let respuesta;
@@ -44,13 +57,12 @@ module.exports = function authService () {
         throw new Error('Parámetro code es requerido.');
       }
       const resultadoState = {};
-      await cliente.authorizationCallback(cliente.redirect_uris[0], params, {
-        nonce: resultadoState.parametros.nonce,
-        state: resultadoState.state
-      });
-      console.log('------------------------------------');
-      console.log(9999999999999);
-      console.log('------------------------------------');
+      cliente.authorizationCallback(cliente.redirect_uris[0], params, {}).then((response) => {
+        console.log('--------REPSONSEEEEEEEEEe----------------------------');
+        console.log(response);
+        console.log('------------------------------------');
+        return response;
+      })
     } catch (error) {
       console.error(error.message);
     }
