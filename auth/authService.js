@@ -1,10 +1,11 @@
 const crypto = require('crypto');
 const moment = require('moment');
+const url = require('url');
 const Issuer = require('openid-client').Issuer;
 const firebase = require('./firebase');
 const config = require('./config');
 
-const ciudadaniaDigitalRef = firebase.database().ref('ciudadania-digital');
+const ciudadaniaDigitalCodeRef = firebase.database().ref().child('code');
 
 /**
  * @function authService
@@ -22,7 +23,7 @@ module.exports = function authService () {
    * @returns {JSON}
    */
 
-  function getCode () {
+  async function getCode () {
     try {
       const state = crypto.randomBytes(16).toString('hex');
       const nonce = crypto.randomBytes(16).toString('hex');
@@ -33,8 +34,7 @@ module.exports = function authService () {
       }, config.openId.client_params);
       const authorizeUrl = cliente.authorizationUrl(authorizationRequest);
 
-
-      const key = ciudadaniaDigitalRef.push().key;
+      const key = ciudadaniaDigitalCodeRef.push().key;
       const newCode = {
         id: key,
         state,
@@ -42,12 +42,11 @@ module.exports = function authService () {
           nonce
         }
       };
-      ciudadaniaDigitalRef.child(key).update(newCode).then(() => {
-        return {
-          url: authorizeUrl,
-          codigo: state
-        };
-      });
+      await ciudadaniaDigitalCodeRef.child(key).update(newCode);
+      return {
+        url: authorizeUrl,
+        codigo: state
+      };
     } catch (error) {
       console.error(error.message);
     }
@@ -60,40 +59,61 @@ module.exports = function authService () {
    * @returns {JSON}
    */
 
-  function authorizate (req, info) {
-    try {
-      let user;
-      let respuesta;
-      console.log('---------------REQPQRASSSSS---------------------');
-      console.log(req);
-      console.log('------------------------------------');
-      const params = cliente.callbackParams(req);
-      console.log('-----------PARAMSSSSSSs-------------------------');
-      console.log(params);
-      console.log('------------------------------------');
-      if (!params.state) {
-        throw new Error('Parámetro state es requerido.');
+  function authorizate (req) {
+    return new Promise((resolve, reject) => {
+      try {
+        const params = cliente.callbackParams(req);
+        if (!params.state) {
+          throw new Error('Parámetro state es requerido.');
+        }
+        if (!params.code) {
+          throw new Error('Parámetro code es requerido.');
+        }
+        
+        ciudadaniaDigitalCodeRef.once('value', (data) => {
+          let token;
+          let resultadoState = Object.entries(data.val()).find(([key, item], i) => item.state === params.state);
+          resultadoState = resultadoState[1];
+          if (resultadoState) {
+            cliente.authorizationCallback(cliente.redirect_uris[0], params, {
+              nonce: resultadoState.parametros.nonce,
+              state: resultadoState.state,
+            })
+            .then(respuestaCode => {
+              token = respuestaCode.id_token;
+              return cliente.userinfo(respuestaCode.access_token);
+            })
+            .then(claims => {
+              const user = {
+                nombres: claims.nombre.nombres,
+                primer_apellido: `${claims.nombre.primer_apellido}`,
+                segundo_apellido: `${claims.nombre.segundo_apellido}`,
+                correo: claims.email,
+                numero_celular: claims.celular,
+                fecha_nacimiento: claims.fecha_nacimiento,
+                usuario: claims.documento_identidad.numero_documento,
+                documento_identidad: claims.documento_identidad.numero_documento,
+              };
+              resolve({
+                usuario: user,
+                token: token,
+                menu: [],
+                permisos: [],
+              });
+            })
+            .catch(err => {
+              resolve({
+                url: cliente.post_logout_redirect_uris[0]
+              });
+            });
+          } else {
+            throw new Error('Ocurrio un error al tratar de autenticar con CD');
+          }
+        });
+      } catch (error) {
+        reject(error.message);
       }
-      if (!params.code) {
-        throw new Error('Parámetro code es requerido.');
-      }
-      const resultadoState = {};
-      cliente.authorizationCallback(cliente.redirect_uris[0], params, {
-        nonce: '',
-        state: params.state,
-      }).then((response) => {
-        console.log('--------REPSONSEEEEEEEEEe----------------------------');
-        console.log(response);
-        console.log('------------------------------------');
-        return response;
-      }).catch(err => {
-        console.log('-----------ERRRRRRRRROOOOOOO-------------------------');
-        console.log(err.message);
-        console.log('------------------------------------');
-      })
-    } catch (error) {
-      console.error(error.message);
-    }
+    });
   }
 
   return {

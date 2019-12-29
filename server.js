@@ -13,23 +13,31 @@ app.all('*', function (req, res, next) {
 });
 
 app.get('/', (req, res) => res.send('Servidor funcionando correctamente'));
-app.get('/authorization', (req, res) => {
+app.get('/authorization', async (req, res) => {
   try {
-    const response = auth.authorizate(req, req.ipInfo);
-    console.log('-----------ABCDE-------------------------');
-    console.log(response);
-    console.log('------------------------------------');
-    res.json({
-      data: response
-    });
+    const response = await auth.authorizate(req);
+    if (response.hasOwnProperty('token')) {
+      res.json({
+        finalizado: true,
+        mensaje: '',
+        data: response
+      });
+    } else {
+      res.json({
+        finalizado: false,
+        mensaje: '',
+        data: response
+      });
+    }
   } catch (error) {
-    throw new Error(error.message);
+    console.error(error.message);
   }
 });
 
-app.get('/auth', (req, res) => {
+app.get('/auth', async (req, res) => {
   try {
-    const response = auth.getCode();
+    const response = await auth.getCode();
+    console.log(response);
     if (response && response.url) {
       res.json({
         finalizado: true,

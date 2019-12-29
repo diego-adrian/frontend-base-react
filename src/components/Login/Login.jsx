@@ -17,9 +17,9 @@ const useStyles = makeStyles(theme => ({
 const Login = () => {
   const classes = useStyles();
 
-  const loginOpenid = async () => {
+  const loginOpenid = () => {
     console.log(Auth);
-    await Auth.getCode();
+    Auth.getCode();
   };
 
   return (
