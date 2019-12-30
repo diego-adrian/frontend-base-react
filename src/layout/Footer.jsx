@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Link } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import classNames from 'classnames';
+import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
 const Footer = () => {
   const classes = useStyles();
   return (
-    <Box component="div" m={1} className={classNames(classes.root, 'app--footer')}>
+    <Box component="div" m={1} className={clsx(classes.root, 'app--footer')}>
       Desarrollado por AGETIC 2020. <Link color="inherit" target="_blank" href="https://agetic.gob.bo/#/">www.agetic.gob.bo</Link>
     </Box>
   )
