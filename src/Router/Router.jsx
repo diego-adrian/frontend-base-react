@@ -1,38 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { Login } from './components';
-import Admin from '../components/admin';
+import Header from '../layout/Header';
+import Main from '../components/Main';
 
-const App = () => {
-  const [state, setState] = useState({
-    loggedIn: false 
-  });
-
-  useEffect(() => {
-    const token = window.localStorage.getItem('app_token');
-    console.log(token);
-    if (token) {
-      setState(state => ({
-        ...state,
-        loggedIn: true
-      }));
-    }
-    return () => {
-      console.log('DESMONTADO');
-    }
-  }, [state.loggedIn]);
-
+const App = ({loggedIn }) => {
   return(
     <Router>
+      <Header/>
       <Switch>
         <Route path='/login' component={Login}></Route>
         <Route path='/logout' component={''}></Route>
         {
-          state.loggedIn ? <Route exact path="/" component={Admin}/> : <Redirect to='/login'/>
+          loggedIn ? <Route path="/" component={Main}/> : <Redirect to='/login'/>
         }
       </Switch>
     </Router>
   );
 }
 
-export default App;
+const mapStateToProps = ({user: { loggedIn}}) => ({
+  loggedIn
+});
+
+export default connect(mapStateToProps)(App);

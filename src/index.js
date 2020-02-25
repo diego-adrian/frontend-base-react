@@ -1,18 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
 import App from './components/App';
-import rootReducer from './reducers';
+import { Provider } from 'react-redux';
+import store from './redux/store';
 import './assets/scss/index.scss';
 import * as serviceWorker from './serviceWorker';
 import 'typeface-roboto';
 
-const store = createStore(rootReducer, composeWithDevTools());
 
 ReactDOM.render(
-  <Provider store={store}>
+  <Provider store={store()}>
     <App />
   </Provider>,
  document.getElementById('root'));

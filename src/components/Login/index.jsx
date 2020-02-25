@@ -1,6 +1,10 @@
-import React, { Fragment } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { Fragment, useEffect } from 'react';
 import { Container, Grid, Button, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import {withRouter} from 'react-router-dom';
+import {connect} from 'react-redux';
+import { setLogin } from '../../redux/userDuck';
 import Footer from '../../layout/Footer';
 import Auth from './auth';
 import './Login.scss';
@@ -14,7 +18,20 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Login = () => {
+const Login = ({setLogin, history}) => {
+  useEffect(() => {
+    const token = window.localStorage.getItem('app_token');
+    if (token) {
+      setLogin(true);
+      history.push('/');
+    } else {
+      setLogin(false);
+      history.push('/login');
+    }
+    return () => {
+      console.log('DESMONTADO');
+    }
+  }, []);
   const classes = useStyles();
 
   const loginOpenid = () => {
@@ -40,4 +57,4 @@ const Login = () => {
   )
 };
 
-export default Login;
+export default withRouter(connect(null, { setLogin })(Login));

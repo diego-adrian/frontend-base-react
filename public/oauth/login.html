@@ -22,9 +22,9 @@
       var params = window.location.search.replace('?', '');
       params = params.split('&');
       if (params[0].split('=')[0] === 'code') {
-        var code = params[0].split('=')[1]; // client_id
-        var state = params[1].split('=')[1]; // scope
-        var session_state = params[2].split('=')[1]; // response_type
+        var code = params[0].split('=')[1];
+        var state = params[1].split('=')[1];
+        var session_state = params[2].split('=')[1];
         var url = config.urlAutorizar;
         url += '?code=' + code;
         url += '&state=' + state;
@@ -35,16 +35,16 @@
           })
           .then(function (response) {
             var data = response;
-            if (data.data.url) {
-              window.location = data.data.url;
+            if (data.url) {
+              window.location = data.url;
               window.localStorage.setItem(config.appName + '_error', JSON.stringify(data.mensaje));
             } else {
-              window.localStorage.setItem(config.appName + '_menu', JSON.stringify(data.data.menu));
-              window.localStorage.setItem(config.appName + '_token', data.data.token);
+              window.localStorage.setItem(config.appName + '_menu', JSON.stringify(data.menu));
+              window.localStorage.setItem(config.appName + '_token', data.token);
               window.localStorage.setItem(config.appName + '_sidenav', JSON.stringify(true));
-              window.localStorage.setItem(config.appName + '_permissions', JSON.stringify(data.data.permisos));
-              window.localStorage.setItem(config.appName + '_user', JSON.stringify(data.data.usuario));
-              window.location = config.urlHome;
+              window.localStorage.setItem(config.appName + '_permissions', JSON.stringify(data.permisos));
+              window.localStorage.setItem(config.appName + '_user', JSON.stringify(data.usuario));
+              window.location = config.urlHome + '#/' + config.page;
             }
           })
           .catch(function (error) {
