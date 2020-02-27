@@ -6,7 +6,7 @@ import { Drawer, Hidden, List, ListItem, ListItemText, Icon } from '@material-ui
 
 const Sidebar = ({ routes }) => {
   return (
-    <h1>asd</h1>
+    <h1>Sidebar</h1>
   )
 };
 

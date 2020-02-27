@@ -1,0 +1,34 @@
+/*
+@author dbarra@agetic.gob.bo
+Archivo de estilos para fuentes externas
+*/
+@font-face {
+  font-family: 'Sansation';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Sansation'), local('Sansation_Light'), url(../fonts/sansation/Sansation_Light.ttf);
+}
+
+@font-face {
+  font-family: 'Titillium Web';
+  font-style: normal;
+  font-weight: 300;
+  src: local('TitilliumWeb Light'), local('TitilliumWeb-Light'), url(../fonts/TitilliumWeb/TitilliumWeb-Light.ttf);
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+
+@font-face {
+  font-family: 'Titillium Web';
+  font-style: normal;
+  font-weight: 400;
+  src: local('TitilliumWeb'), local('TitilliumWeb-Regular'), url(../fonts/TitilliumWeb/TitilliumWeb-Regular.ttf);
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+
+@font-face {
+  font-family: 'Titillium Web';
+  font-style: normal;
+  font-weight: 600;
+  src: local('TitilliumWeb Bold'), local('TitilliumWeb-Bold'), url(../fonts/TitilliumWeb/TitilliumWeb-Bold.ttf);
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}

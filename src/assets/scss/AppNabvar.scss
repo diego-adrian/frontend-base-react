@@ -1,0 +1,148 @@
+@import './variables.scss';
+
+.redes__sociales {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+
+  li {
+    align-self: center;
+    margin-right: 2px;
+    cursor: pointer;
+
+    &:nth-child(1) {
+      width: 32px;
+      height: 32px;
+      background: url('../images/facebook.svg') no-repeat;
+      background-size: contain;
+      background-position: center;
+
+      &:hover::before {
+        content: attr(tooltip);
+        padding: 5px;
+        max-width: 100px;
+        color: $white;
+        font-size: 12px;
+        position: absolute;
+        background: $black;
+        top: 45px;
+      }
+    }
+
+    &:nth-child(2) {
+      width: 32px;
+      height: 32px;
+      background: url('../images/twitter.svg') no-repeat;
+      background-size: contain;
+      background-position: center;
+
+      &:hover::before {
+        content: attr(tooltip);
+        padding: 5px;
+        max-width: 100px;
+        color: $white;
+        font-size: 12px;
+        position: absolute;
+        background: $black;
+        top: 45px;
+      }
+    }
+
+    &:nth-child(3) {
+      width: 32px;
+      height: 32px;
+      background: url('../images/youtube.svg') no-repeat;
+      background-size: contain;
+      background-position: center;
+
+      &:hover::before {
+        content: attr(tooltip);
+        padding: 5px;
+        max-width: 100px;
+        color: $white;
+        font-size: 12px;
+        position: absolute;
+        background: $black;
+        top: 45px;
+      }
+    }
+
+    &:nth-child(4) {
+      width: 32px;
+      height: 32px;
+      background: url('../images/phone.svg') no-repeat;
+      background-size: contain;
+      background-position: center;
+
+      &:hover::before {
+        content: attr(tooltip);
+        padding: 5px;
+        max-width: 150px;
+        width: 130px;
+        color: $white;
+        font-size: 12px;
+        position: absolute;
+        background: $black;
+        top: 45px;
+      }
+    }
+
+    &:nth-child(5) {
+      width: 32px;
+      height: 32px;
+      background: url('../images/email.svg') no-repeat;
+      background-size: contain;
+      background-position: center;
+
+      &:hover::before {
+        content: attr(tooltip);
+        padding: 5px;
+        max-width: 150px;
+        width: 120px;
+        color: $white;
+        font-size: 12px;
+        position: absolute;
+        background: $black;
+        top: 45px;
+      }
+    }
+
+    &:nth-child(6) {
+      width: 32px;
+      height: 32px;
+      background: url('../images/whatsapp.svg') no-repeat;
+      background-size: contain;
+      background-position: center;
+
+      &:hover::before {
+        content: attr(tooltip);
+        padding: 5px;
+        max-width: 100px;
+        color: $white;
+        font-size: 12px;
+        position: absolute;
+        background: $black;
+        top: 45px;
+      }
+    }
+
+    &:nth-child(7) {
+      width: 32px;
+      height: 32px;
+      background: url('../images/messenger.svg') no-repeat;
+      background-size: contain;
+      background-position: center;
+
+      &:hover::before {
+        content: attr(tooltip);
+        padding: 5px;
+        max-width: 100px;
+        color: $white;
+        font-size: 12px;
+        position: absolute;
+        background: $black;
+        top: 45px;
+      }
+    }
+  }
+}
