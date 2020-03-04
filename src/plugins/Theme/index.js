@@ -1,7 +1,15 @@
 import { createMuiTheme } from '@material-ui/core/styles';
+import { sansation, titilliumWebLight, titilliumWebRegular, titilliumWebBold} from './fonts';
 const theme = createMuiTheme({
   typography: {
-    fontFamily: ['Roboto'].join(',')
+    fontFamily: ['Roboto', 'Sansation', 'Titillium Web'].join(',')
+  },
+  overrides: {
+    MuiCssBaseline: {
+      '@global': {
+        '@font-face': [sansation, titilliumWebLight, titilliumWebRegular, titilliumWebBold],
+      },
+    }
   },
   palette: {
     contrastThreshold: 3,

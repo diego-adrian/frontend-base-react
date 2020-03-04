@@ -17,7 +17,7 @@ const useStyles = makeStyles(() => ({
   boliviaServicio: {
     color: 'rgba(0, 0, 0, 0.75)',
     fontFamily: 'Sansation',
-    fontSize: '.8em'
+    fontSize: '.9em'
   }
 }));
 
