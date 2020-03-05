@@ -1,26 +1,27 @@
 // constants
 const initialState = {
-  appSidenavOpen: true
+  widthSidenavOpen: 240,
+  widthSidenavClose: 55,
+  appSidenavStatus: true
 };
-const SET_OPEN = 'SET_OPEN';
-const SET_CLOSE = 'SET_CLOSE';
+const SET_STATUS = 'SET_STATUS';
 // reducer
-
-export const reducer = (state = initialState, action) => {
+export const reducerLayout = (state = initialState, action) => {
   switch (action.type) {
-    case SET_OPEN:
+    case SET_STATUS:
       return {
         ...state,
-        appSidenavOpen: action.payload.action
-      }
-    case SET_CLOSE:
-      return {
-        ...state,
-        appSidenavOpen: action.payload.action
+        appSidenavStatus: action.payload
       }
      default:
       return state;
   }
 };
 // actions
+export const setStatusSidenav = (option) => {
+  return {
+    type: SET_STATUS,
+    payload: option
+  }
+};
 

@@ -3,14 +3,14 @@ import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { Login } from './components';
 import AppNavbar from '../layout/AppNavbar';
-import AppSidebar from '../layout/AppSidebar';
+import AppSidenav from '../layout/AppSidenav';
 import Main from '../components/Main';
 
-const App = ({loggedIn }) => {
+const App = ({ loggedIn }) => {
   return(
     <Router>
       <AppNavbar/>
-      <AppSidebar/>
+      <AppSidenav/>
       <Switch>
         <Route path='/login' component={Login}></Route>
         <Route path='/logout' component={''}></Route>
