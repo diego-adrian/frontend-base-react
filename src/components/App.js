@@ -1,5 +1,6 @@
 import React from 'react';
-import Router from '../Router/Router';
+import Routes from '../Router/Router';
+import { HashRouter as Router} from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core/styles';
 import theme from '../plugins/Theme';
 import { CssBaseline } from '@material-ui/core';
@@ -7,7 +8,9 @@ import { CssBaseline } from '@material-ui/core';
 const App = () => (
   <ThemeProvider theme={theme}>
     <CssBaseline/>
-    <Router/>
+    <Router>
+      <Routes/>
+    </Router>
   </ThemeProvider>
 )
 

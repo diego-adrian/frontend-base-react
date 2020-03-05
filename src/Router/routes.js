@@ -1,5 +1,5 @@
-import { Dashboard } from '@material-ui/icons';
-import { DashboardPage, Login } from './components';
+import { Dashboard, SupervisedUserCircleRounded } from '@material-ui/icons';
+import { DashboardPage, Login, User } from './components';
 
 const routes = [
   {
@@ -7,6 +7,12 @@ const routes = [
     name: 'Dashboard',
     icon: Dashboard,
     component: DashboardPage
+  },
+  {
+    path: '/user',
+    name: 'User',
+    icon: SupervisedUserCircleRounded,
+    component: User
   },
   {
     path: '/login',

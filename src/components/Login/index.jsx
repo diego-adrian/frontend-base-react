@@ -21,6 +21,7 @@ const useStyles = makeStyles(theme => ({
 const Login = ({setLogin, history}) => {
   useEffect(() => {
     const token = window.localStorage.getItem('app_token');
+    console.log(token);
     if (token) {
       setLogin(true);
       history.push('/');

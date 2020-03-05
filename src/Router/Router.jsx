@@ -1,29 +1,76 @@
-import React from 'react';
-import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import React, { Fragment, useEffect, useState } from 'react';
+import clsx from 'clsx';
+import { Switch, Route, withRouter } from 'react-router-dom';
+import { Box } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
-import { Login } from './components';
 import AppNavbar from '../layout/AppNavbar';
 import AppSidenav from '../layout/AppSidenav';
-import Main from '../components/Main';
+import Routes from './routes';
 
-const App = ({ loggedIn }) => {
+const Location = () => Routes.map((item, idx) => <Route key={idx} path={item.path} component={item.component}></Route>);
+
+const App = ({ loggedIn, history, widthSidenavOpen, widthSidenavClose, appSidenavStatus }) => {
+
+  const [state, setState] = useState(false);
+
+  useEffect(() => {
+    console.log(3333333);
+    if (!state) {
+      console.log(44444);
+      setState(loggedIn);
+      history.push('/login');
+    }
+    return () => {
+      console.log('9999999999999');
+    }
+  }, [state]);
+
+  const useStyles = makeStyles(theme => ({
+    root: {
+      padding: 0,
+      margin: 0,
+      marginTop: 50
+    },
+    normalMode: {
+      transition: theme.transitions.create('margin', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+      marginLeft: widthSidenavOpen,
+    },
+    compressMode: {
+      transition: theme.transitions.create('margin', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+      marginLeft: widthSidenavClose,
+    }
+  }));
+
+  const classes = useStyles();
+
   return(
-    <Router>
+    <Fragment>
       <AppNavbar/>
       <AppSidenav/>
-      <Switch>
-        <Route path='/login' component={Login}></Route>
-        <Route path='/logout' component={''}></Route>
-        {
-          loggedIn ? <Route path="/" component={Main}/> : <Redirect to='/login'/>
-        }
-      </Switch>
-    </Router>
+      <Box className={clsx(classes.root, {
+        [classes.normalMode]: appSidenavStatus,
+        [classes.compressMode]: !appSidenavStatus
+      })}>
+        <Switch>
+          <Location/>
+        </Switch>
+      </Box>
+    </Fragment>
   );
 }
 
-const mapStateToProps = ({user: { loggedIn}}) => ({
-  loggedIn
+const mapStateToProps = ({user: { loggedIn}, layout: { widthSidenavOpen, widthSidenavClose, appSidenavStatus}}) => ({
+  loggedIn,
+  widthSidenavOpen,
+  widthSidenavClose,
+  appSidenavStatus
 });
 
-export default connect(mapStateToProps)(App);
+export default withRouter(connect(mapStateToProps)(App));

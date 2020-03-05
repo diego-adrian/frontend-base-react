@@ -1,10 +1,11 @@
 import React from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
-import { Inbox } from '@material-ui/icons';
+import { Icon } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { Drawer, List, ListItem, ListItemText, ListItemIcon, Divider } from '@material-ui/core';
-
+import { NavLink } from 'react-router-dom';
+import Routes from '../Router/routes';
+import { Drawer, List, ListItemText, Divider, Box } from '@material-ui/core';
 
 const Sidebar = ({widthSidenavOpen, widthSidenavClose, appSidenavStatus}) => {
   const useStyles = makeStyles(theme => ({
@@ -56,12 +57,20 @@ const Sidebar = ({widthSidenavOpen, widthSidenavClose, appSidenavStatus}) => {
         App
         <Divider/>
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <Inbox /> : <Inbox />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+            {Routes.map((item, index) => (
+              <NavLink 
+                to={item.path}
+                activeStyle={{
+                  fontWeight: "bold",
+                  color: "red"
+                }}
+                key={index}>
+                <Box mr={1}>
+                  <Icon component={item.icon}></Icon>
+                </Box>
+                <ListItemText primary={item.name} />
+              </NavLink>
+            ))}
         </List>
       </Drawer>
     </div>

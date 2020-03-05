@@ -1,9 +1,9 @@
 {
   "name": "frontend-base-react",
   "description": "Frontend base realizado con react en su última version con react, hooks, material-ui y otras tecnologías",
-  "author": "adry.dabp@gmail.com",
+  "author": "dbarra@agetic.gob.bo",
   "version": "1.0.0",
-  "private": true,
+  "private": false,
   "dependencies": {
     "@material-ui/core": "^4.9.3",
     "@material-ui/icons": "^4.9.1",
@@ -13,7 +13,6 @@
     "axios": "^0.19.2",
     "express": "^4.17.1",
     "moment": "^2.24.0",
-    "openid-client": "3.13.0",
     "react": "16.12.0",
     "react-dom": "16.12.0",
     "react-redux": "^7.2.0",
@@ -48,10 +47,7 @@
     ]
   },
   "devDependencies": {
-    "crypto": "^1.0.1",
-    "firebase": "^7.9.0",
     "node-sass": "^4.13.1",
-    "nodemon": "^2.0.2",
     "redux-devtools-extension": "^2.13.8"
   }
 }

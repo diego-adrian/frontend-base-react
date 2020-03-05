@@ -1,7 +1,7 @@
 // constants
 const initialState = {
   widthSidenavOpen: 240,
-  widthSidenavClose: 55,
+  widthSidenavClose: 50,
   appSidenavStatus: true
 };
 const SET_STATUS = 'SET_STATUS';

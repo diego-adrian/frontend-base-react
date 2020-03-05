@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import { setStatusSidenav } from '../redux/layoutDuck';
 import '../assets/scss/AppNabvar.scss';
 
-
 const AppNavbar = ({ widthSidenavOpen, appSidenavStatus, widthSidenavClose, setStatusSidenav }) => {
   const useStyles = makeStyles(theme => ({
     root: {
