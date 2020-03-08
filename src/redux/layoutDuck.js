@@ -1,8 +1,8 @@
 // constants
 const initialState = {
-  widthSidenavOpen: 240,
-  widthSidenavClose: 50,
-  appSidenavStatus: true
+  widthSidenavOpen: 0,
+  widthSidenavClose: 0,
+  appSidenavStatus: false
 };
 const SET_STATUS = 'SET_STATUS';
 // reducer
@@ -11,7 +11,9 @@ export const reducerLayout = (state = initialState, action) => {
     case SET_STATUS:
       return {
         ...state,
-        appSidenavStatus: action.payload
+        appSidenavStatus: action.payload.option,
+        widthSidenavOpen: action.payload.widthSidenavOpen,
+        widthSidenavClose: action.payload.widthSidenavClose
       }
      default:
       return state;
@@ -21,7 +23,11 @@ export const reducerLayout = (state = initialState, action) => {
 export const setStatusSidenav = (option) => {
   return {
     type: SET_STATUS,
-    payload: option
+    payload: {
+      option,
+      widthSidenavOpen: 240,
+      widthSidenavClose: 50
+    }
   }
 };
 

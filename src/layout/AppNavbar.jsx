@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { setStatusSidenav } from '../redux/layoutDuck';
 import '../assets/scss/AppNabvar.scss';
 
-const AppNavbar = ({ widthSidenavOpen, appSidenavStatus, widthSidenavClose, setStatusSidenav }) => {
+const AppNavbar = ({ loggedIn, widthSidenavOpen, appSidenavStatus, widthSidenavClose, setStatusSidenav }) => {
   const useStyles = makeStyles(theme => ({
     root: {
       boxShadow: 'none',
@@ -43,7 +43,7 @@ const AppNavbar = ({ widthSidenavOpen, appSidenavStatus, widthSidenavClose, setS
     setStatusSidenav(!appSidenavStatus);
   };
   return (
-    <AppBar position="fixed" className={clsx(classes.root, {
+    loggedIn && <AppBar position="fixed" className={clsx(classes.root, {
       [classes.appSidenavOpen]: appSidenavStatus,
       [classes.appSidenavClose]: !appSidenavStatus
     })}>
@@ -66,7 +66,8 @@ const AppNavbar = ({ widthSidenavOpen, appSidenavStatus, widthSidenavClose, setS
   )
 };
 
-const mapStateToProps = ({ layout: { widthSidenavOpen, appSidenavStatus, widthSidenavClose }}) => ({
+const mapStateToProps = ({ user: { loggedIn }, layout: { widthSidenavOpen, appSidenavStatus, widthSidenavClose }}) => ({
+  loggedIn,
   widthSidenavOpen,
   widthSidenavClose,
   appSidenavStatus

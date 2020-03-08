@@ -7,8 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const admin = ({ widthSidenavOpen, widthSidenavClose, appSidenavStatus }) => {
   const useStyles = makeStyles(theme => ({
     root: {
-      marginLeft: 0,
-      marginTop: 50,
+      margin: 0,
       padding: 10,
       display: 'flex',
       flexGrow: 1

@@ -1,36 +1,41 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import clsx from 'clsx';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import { Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import AppNavbar from '../layout/AppNavbar';
+import Storage from '../plugins/Storage';
 import AppSidenav from '../layout/AppSidenav';
 import Routes from './routes';
+import { setLogin } from '../redux/userDuck';
+import { setStatusSidenav } from '../redux/layoutDuck';
 
 const Location = () => Routes.map((item, idx) => <Route key={idx} path={item.path} component={item.component}></Route>);
 
-const App = ({ loggedIn, history, widthSidenavOpen, widthSidenavClose, appSidenavStatus }) => {
-
-  const [state, setState] = useState(false);
-
+const App = ({ setLogin, setStatusSidenav, history, widthSidenavOpen, widthSidenavClose, appSidenavStatus }) => {
   useEffect(() => {
-    console.log(3333333);
-    if (!state) {
-      console.log(44444);
-      setState(loggedIn);
+    const token = Storage.get('token');
+    if (token) {
+      const pathName = history.location.pathname;
+      setLogin(true);
+      setStatusSidenav(true);
+      if (pathName !== '/login' && pathName !== '/') {
+        history.push(pathName);
+      } else {
+        history.push('/dashboard')
+      }
+    } else {
+      setLogin(false);
+      setStatusSidenav(false);
       history.push('/login');
     }
-    return () => {
-      console.log('9999999999999');
-    }
-  }, [state]);
+  }, [history.location]);
 
   const useStyles = makeStyles(theme => ({
     root: {
       padding: 0,
-      margin: 0,
-      marginTop: 50
+      margin: 0
     },
     normalMode: {
       transition: theme.transitions.create('margin', {
@@ -66,11 +71,10 @@ const App = ({ loggedIn, history, widthSidenavOpen, widthSidenavClose, appSidena
   );
 }
 
-const mapStateToProps = ({user: { loggedIn}, layout: { widthSidenavOpen, widthSidenavClose, appSidenavStatus}}) => ({
-  loggedIn,
+const mapStateToProps = ({ layout: { widthSidenavOpen, widthSidenavClose, appSidenavStatus}}) => ({
   widthSidenavOpen,
   widthSidenavClose,
   appSidenavStatus
 });
 
-export default withRouter(connect(mapStateToProps)(App));
+export default withRouter(connect(mapStateToProps, { setLogin, setStatusSidenav })(App));

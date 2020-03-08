@@ -12,7 +12,7 @@ export const reducer = (state = initialState, action) => {
         loggedIn: action.payload.loggedIn
       }
     default: 
-      return state;
+      return state; 
   }
 };
 // actions (actions creator)

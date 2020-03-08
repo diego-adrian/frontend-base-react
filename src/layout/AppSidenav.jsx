@@ -7,7 +7,7 @@ import { NavLink } from 'react-router-dom';
 import Routes from '../Router/routes';
 import { Drawer, List, ListItemText, Divider, Box } from '@material-ui/core';
 
-const Sidebar = ({widthSidenavOpen, widthSidenavClose, appSidenavStatus}) => {
+const Sidebar = ({loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatus}) => {
   const useStyles = makeStyles(theme => ({
     root: {
       display: 'flex'
@@ -39,7 +39,7 @@ const Sidebar = ({widthSidenavOpen, widthSidenavClose, appSidenavStatus}) => {
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
+    loggedIn && <div className={classes.root}>
       <Drawer
         elevation={0}
         className={clsx({
@@ -77,7 +77,8 @@ const Sidebar = ({widthSidenavOpen, widthSidenavClose, appSidenavStatus}) => {
   )
 };
 
-const mapStateToProps = ({layout: { widthSidenavOpen, appSidenavStatus, widthSidenavClose }}) => ({
+const mapStateToProps = ({ user: { loggedIn }, layout: { widthSidenavOpen, appSidenavStatus, widthSidenavClose }}) => ({
+  loggedIn,
   widthSidenavOpen,
   appSidenavStatus,
   widthSidenavClose

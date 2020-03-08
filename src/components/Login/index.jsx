@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import { Container, Grid, Button, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import {withRouter} from 'react-router-dom';
@@ -18,25 +17,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Login = ({setLogin, history}) => {
-  useEffect(() => {
-    const token = window.localStorage.getItem('app_token');
-    console.log(token);
-    if (token) {
-      setLogin(true);
-      history.push('/');
-    } else {
-      setLogin(false);
-      history.push('/login');
-    }
-    return () => {
-      console.log('DESMONTADO');
-    }
-  }, []);
+const Login = () => {
+  console.log('LOGIN');
   const classes = useStyles();
-
   const loginOpenid = () => {
-    console.log(Auth);
     Auth.getCode();
   };
 
