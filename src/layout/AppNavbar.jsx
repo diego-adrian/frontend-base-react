@@ -30,7 +30,8 @@ const AppNavbar = ({ loggedIn, widthSidenavOpen, appSidenavStatus, widthSidenavC
       })
     },
     toolbar: {
-      minHeight: '50px'
+      minHeight: '50px',
+      paddingLeft: 0
     },
     boliviaServicio: {
       color: 'rgba(0, 0, 0, 0.75)',
