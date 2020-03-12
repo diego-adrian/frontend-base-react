@@ -28,3 +28,50 @@ html, body {
   color: $white;
   font-size: 15px;
 }
+
+/* Page - AppSidenav */
+.app--sidenav {
+  .user--information {
+    padding: 0;
+    margin: 0;
+    height: 250px;
+    background: url('../images/geometric.png') lighten($color: $info, $amount: 45) no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .user--information_logo {
+      border: 3px solid #fff;
+      border-radius: 50%;
+      color: #fff;
+      font-size: 3.4rem;
+      height: 100px;
+      line-height: 90px;
+      margin: 0 auto;
+      text-align: center;
+      text-transform: uppercase;
+      width: 100px;
+      user-select: none;
+    }
+    .user--information_name {
+      font-family: $fontFamilyTitilliumWeb;
+      font-size: .9rem;
+      letter-spacing: 0;
+      font-weight: 600;
+      text-transform: uppercase;
+      text-align: center;
+      padding-top: 15px;
+      padding-bottom: 10px;
+      user-select: none;
+    }
+    .user--information_email {
+      font-family: $fontFamilyTitilliumWeb;
+      font-size: .9rem;
+      letter-spacing: 0;
+      text-align: center;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      user-select: none;
+    }
+  }
+}

@@ -16,19 +16,18 @@ import {
   CardContent,
   MenuItem,
   Menu,
-  CardMedia,
   Box,
   Card
 } from '@material-ui/core';
 import { AssignmentInd, FolderShared } from '@material-ui/icons';
 import Routes from '../Router/routes';
 import Storage from '../plugins/Storage';
-import Logo from '../assets/images/geometric.png';
 
 const Sidebar = ({loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatus}) => {
   const [itemSelected, setItemSelected] = useState(0);
   const [state, setState] = useState({
     popupUserInfo: null,
+    title: 'frontend base',
     user: Storage.getUser()
   });
   const useStyles = makeStyles(theme => ({
@@ -88,6 +87,7 @@ const Sidebar = ({loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatu
       padding: 0,
       margin: 0,
       width: 35,
+      marginRight: 5,
       minWidth: 35,
       height: 35,
       minHeight: 35,
@@ -115,15 +115,8 @@ const Sidebar = ({loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatu
     },
     title: {
       textAlign: 'center',
-      color: '#FFF'
-    },
-    media: {
-      padding: 0,
-      margin: 0,
-      height: 0,
-      paddingTop: 250,
-      borderTop: '3px solid #FFF',
-      backgroundColor: theme.palette.info.light
+      color: '#FFF',
+      textTransform: 'uppercase'
     },
     logout: {
       color: theme.palette.error.main,
@@ -158,7 +151,7 @@ const Sidebar = ({loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatu
         className={clsx({
           [classes.appSidenavOpen]: appSidenavStatus,
           [classes.appSidenavClose]: !appSidenavStatus,
-        })}
+        }, 'app--sidenav')}
         classes={{
           paper: clsx(classes.appSidenav, {
             [classes.appSidenavOpen]: appSidenavStatus,
@@ -174,7 +167,7 @@ const Sidebar = ({loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatu
               aria-controls="user-info" 
               aria-haspopup="true"
               onClick={handleUserInfo}>
-              F
+              { state.title.charAt(0) }
             </Button>
             <Menu
               id="user-info"
@@ -211,14 +204,21 @@ const Sidebar = ({loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatu
                 <Box>Cerrar Sesion</Box>
               </MenuItem>
             </Menu>
-            <ListItemText className={clsx(classes.title)} primary={'FRONTEND BASE'} />
+            <ListItemText className={clsx(classes.title)} primary={state.title} />
           </ListItem>
         </List>
-        <CardMedia
-          className={classes.media}
-          image={Logo}
-          title="Logo de la Aplicacion"
-        />
+        {/* INFORMACION DEL USUARIO */}
+        <section className="user--information">
+          <section className="user--information_logo">
+          { state.user ? state.user.nombres.charAt(0)  : ''}
+          </section>
+          <section className="user--information_name">
+            { state.user ? state.user.nombres  : ''}
+          </section>
+          <section className="user--information_email">
+          { state.user ? state.user.email  : ''}
+          </section>
+        </section>
         <Divider/>
         <List aria-label="routes" style={{ paddingTop: 1 }}>
           {Routes.map((item, index) => (

@@ -24,7 +24,7 @@
     "typeface-roboto": "0.0.75"
   },
   "scripts": {
-    "start": "PORT=8080 react-scripts start",
+    "start": "PORT=8080 EXTEND_ESLINT=true react-scripts start",
     "secure": "HTTPS=true npm start",
     "server": "nodemon server.js",
     "build": "react-scripts build",
@@ -32,9 +32,15 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": "react-app",
+    "extends": [
+      "react-app",
+      "airbnb"
+    ],
     "rules": {
-      "react-hooks/exhaustive-deps": "off"
+      "react-hooks/exhaustive-deps": "off",
+      "eslint-disable-next-line": "off",
+      "comma-dangle": "off",
+      "react/prop-types": "off"
     }
   },
   "browserslist": {
@@ -50,6 +56,7 @@
     ]
   },
   "devDependencies": {
+    "eslint-config-airbnb": "^18.0.1",
     "node-sass": "^4.13.1",
     "redux-devtools-extension": "^2.13.8"
   }
