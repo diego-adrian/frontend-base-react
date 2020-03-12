@@ -62,7 +62,7 @@ const Sidebar = ({loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatu
     appearance: {
       padding: 0,
       margin: 0,
-      backgroundColor: theme.palette.primary.dark
+      backgroundColor: theme.palette.secondary.dark
     },
     links: {
       textDecoration: 'none',
@@ -110,7 +110,8 @@ const Sidebar = ({loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatu
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      backgroundColor: theme.palette.primary.dark
     },
     title: {
       textAlign: 'center',
@@ -122,7 +123,6 @@ const Sidebar = ({loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatu
       height: 0,
       paddingTop: 250,
       borderTop: '3px solid #FFF',
-      borderBottom: '2px solid #FFF',
       backgroundColor: theme.palette.info.light
     },
     logout: {
@@ -220,26 +220,26 @@ const Sidebar = ({loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatu
           title="Logo de la Aplicacion"
         />
         <Divider/>
-        <List aria-label="routes">
-            {Routes.map((item, index) => (
-              <NavLink 
-                to={item.path}
-                className={clsx(classes.links)}
-                key={index}>
-                <ListItem
-                  className={clsx({
-                    [classes.selectItem]: itemSelected === index
-                  })}
-                  onClick={() => setItemSelected(index)}
-                >
-                  <ListItemIcon style={{ minWidth: 35}}>
-                    <Icon className={clsx(classes.icon)} component={item.icon}></Icon>
-                  </ListItemIcon>
-                  <ListItemText primary={item.name} />
-                </ListItem>
-                <Divider/>
-              </NavLink>
-            ))}
+        <List aria-label="routes" style={{ paddingTop: 1 }}>
+          {Routes.map((item, index) => (
+            <NavLink 
+              to={item.path}
+              className={clsx(classes.links)}
+              key={index}>
+              <ListItem
+                className={clsx({
+                  [classes.selectItem]: itemSelected === index
+                })}
+                onClick={() => setItemSelected(index)}
+              >
+                <ListItemIcon style={{ minWidth: 35}}>
+                  <Icon className={clsx(classes.icon)} component={item.icon}></Icon>
+                </ListItemIcon>
+                <ListItemText primary={item.name} />
+              </ListItem>
+              <Divider/>
+            </NavLink>
+          ))}
         </List>
       </Drawer>
     </div>
