@@ -1,19 +1,25 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
-import { Icon, ListItem, ListItemIcon, Grid } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { 
   Drawer,
   List,
+  Icon,
+  ListItem,
+  ListItemIcon,
+  Grid,
   ListItemText,
   Divider,
   Button,
+  CardContent,
   MenuItem,
   Menu,
+  Box,
   Card
 } from '@material-ui/core';
+import { SupervisedUserCircle } from '@material-ui/icons';
 import Routes from '../Router/routes';
 import '../assets/scss/AppSidenav.scss';
 
@@ -60,7 +66,25 @@ const Sidebar = ({loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatu
         fontSize: '14px'
       }
     },
+    card: {
+      outline: 'none'
+    },
     btnUserInfo: {
+      background: theme.palette.info.main,
+      borderRadius: '50%',
+      padding: 0,
+      margin: 0,
+      marginRight: 10,
+      width: 30,
+      minWidth: 30,
+      height: 30,
+      minHeight: 30,
+      color: '#FFF',
+      '&:hover': {
+        background: theme.palette.info.main,
+      }
+    },
+    btnUserInfoCard: {
       background: theme.palette.info.main,
       borderRadius: '50%',
       padding: 0,
@@ -128,7 +152,7 @@ const Sidebar = ({loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatu
             <Button 
               className={classes.btnUserInfo}
               aria-controls="user-info" 
-              aria-haspopup="true" 
+              aria-haspopup="true"
               onClick={handleUserInfo}>
               A
             </Button>
@@ -140,19 +164,24 @@ const Sidebar = ({loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatu
               onClose={handleCloseUserInfo}
               PaperProps={{
                 style: {
-                  width: 350
+                  width: 300
                 }
               }}
             >
-              <Card elevation={0}>
-                <Grid container spacing={2}>
-                  <Grid item xs={6} md={6}>
-                    AAAA
+              <Card elevation={0} className={classes.card}>
+                <CardContent style={{ padding: 8}}>
+                  <Grid container>
+                    <Grid item xs={3} sm={3} md={3} xl={3}>
+                      <Box textAlign="center">
+                        <SupervisedUserCircle className={classes.btnUserInfoCard}/>
+                      </Box>
+                    </Grid>
+                    <Grid item xs={9} sm={9} md={9} xl={9}>
+                      <Box>MARIANA ROCHA MACUAPA</Box>
+                      <Box>adry.dabp@gmail.com</Box>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={6} md={6}>
-                    BBBB
-                  </Grid>
-                </Grid>
+                </CardContent>
               </Card>
               <Divider/>
               <MenuItem onClick={handleCloseUserInfo}>Logout</MenuItem>
