@@ -25,7 +25,7 @@ export const setStatusSidenav = (option) => {
     type: SET_STATUS,
     payload: {
       option,
-      widthSidenavOpen: 300,
+      widthSidenavOpen: 280,
       widthSidenavClose: 50
     }
   }

@@ -16,17 +16,20 @@ import {
   CardContent,
   MenuItem,
   Menu,
+  CardMedia,
   Box,
   Card
 } from '@material-ui/core';
-import { SupervisedUserCircle } from '@material-ui/icons';
+import { AssignmentInd, FolderShared } from '@material-ui/icons';
 import Routes from '../Router/routes';
-import '../assets/scss/AppSidenav.scss';
+import Storage from '../plugins/Storage';
+import Logo from '../assets/images/geometric.png';
 
 const Sidebar = ({loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatus}) => {
   const [itemSelected, setItemSelected] = useState(0);
   const [state, setState] = useState({
-    popupUserInfo: null
+    popupUserInfo: null,
+    user: Storage.getUser()
   });
   const useStyles = makeStyles(theme => ({
     root: {
@@ -35,7 +38,8 @@ const Sidebar = ({loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatu
     appSidenav: {
       width: widthSidenavOpen,
       flexShrink: 0,
-      whiteSpace: 'nowrap'
+      whiteSpace: 'nowrap',
+      borderRight: 0
     },
     appSidenavOpen: {
       width: widthSidenavOpen,
@@ -56,14 +60,23 @@ const Sidebar = ({loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatu
       }
     },
     appearance: {
-      backgroundColor: theme.palette.primary.dark,
-      fontFamily: 'Titillium Web'
+      padding: 0,
+      margin: 0,
+      backgroundColor: theme.palette.primary.dark
     },
     links: {
       textDecoration: 'none',
       '& span': {
         color: '#FFF',
         fontSize: '14px'
+      },
+      
+    },
+    selectItem: {
+      backgroundColor: theme.palette.info.main,
+      '& svg': {
+        color: theme.palette.primary.dark,
+        opacity: 1
       }
     },
     card: {
@@ -74,44 +87,51 @@ const Sidebar = ({loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatu
       borderRadius: '50%',
       padding: 0,
       margin: 0,
-      marginRight: 10,
-      width: 30,
-      minWidth: 30,
-      height: 30,
-      minHeight: 30,
+      width: 35,
+      minWidth: 35,
+      height: 35,
+      minHeight: 35,
       color: '#FFF',
       '&:hover': {
         background: theme.palette.info.main,
       }
     },
     btnUserInfoCard: {
-      background: theme.palette.info.main,
-      borderRadius: '50%',
       padding: 0,
       margin: 0,
-      marginRight: 10,
       width: 40,
       minWidth: 40,
       height: 40,
       minHeight: 40,
-      color: '#FFF',
-      '&:hover': {
-        background: theme.palette.info.main,
-      }
+      color: theme.palette.info.main,
     },
     header: {
       height: 50,
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'center',
-      borderBottom: '1px solid rgba(255, 255, 255, 0.5)'
+      justifyContent: 'center'
     },
-    icons: {
-      color: '#FFF',
-      '& path': {
-        fill: '#FFF'
-      }
+    title: {
+      textAlign: 'center',
+      color: '#FFF'
+    },
+    media: {
+      padding: 0,
+      margin: 0,
+      height: 0,
+      paddingTop: 250,
+      borderTop: '3px solid #FFF',
+      borderBottom: '2px solid #FFF',
+      backgroundColor: theme.palette.info.light
+    },
+    logout: {
+      color: theme.palette.error.main,
+      fontWeight: 400
+    },
+    icon: {
+      color: theme.palette.info.light,
+      opacity: .3
     }
   }));
 
@@ -148,13 +168,13 @@ const Sidebar = ({loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatu
         variant="permanent"
       >
         <List aria-label="header" className={classes.header}>
-          <ListItem>
+          <ListItem style={{ paddingLeft: 10, paddingRight: 10}}>
             <Button 
               className={classes.btnUserInfo}
               aria-controls="user-info" 
               aria-haspopup="true"
               onClick={handleUserInfo}>
-              A
+              F
             </Button>
             <Menu
               id="user-info"
@@ -173,41 +193,49 @@ const Sidebar = ({loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatu
                   <Grid container>
                     <Grid item xs={3} sm={3} md={3} xl={3}>
                       <Box textAlign="center">
-                        <SupervisedUserCircle className={classes.btnUserInfoCard}/>
+                        <AssignmentInd className={classes.btnUserInfoCard}/>
                       </Box>
                     </Grid>
                     <Grid item xs={9} sm={9} md={9} xl={9}>
-                      <Box>MARIANA ROCHA MACUAPA</Box>
-                      <Box>adry.dabp@gmail.com</Box>
+                      <Box>
+                        { state.user ? `${state.user.nombres} ${state.user.primer_apellido} ${state.user.segundo_apellido}` : '' }
+                      </Box>
+                      <Box>{ state.user ? state.user.email : ''}</Box>
                     </Grid>
                   </Grid>
                 </CardContent>
               </Card>
               <Divider/>
-              <MenuItem onClick={handleCloseUserInfo}>Logout</MenuItem>
+              <MenuItem className={clsx(classes.logout)}  onClick={handleCloseUserInfo}>
+                <Box mr={1} pt={1}><FolderShared/></Box>
+                <Box>Cerrar Sesion</Box>
+              </MenuItem>
             </Menu>
-            <ListItemText className={clsx(classes.links)} primary={'FRONTEND BASE'} />
+            <ListItemText className={clsx(classes.title)} primary={'FRONTEND BASE'} />
           </ListItem>
         </List>
+        <CardMedia
+          className={classes.media}
+          image={Logo}
+          title="Logo de la Aplicacion"
+        />
         <Divider/>
-        <List aria-label="rutas">
+        <List aria-label="routes">
             {Routes.map((item, index) => (
               <NavLink 
                 to={item.path}
-                className={classes.links}
-                activeStyle={{
-                  fontWeight: "bold",
-                  color: "red"
-                }}
+                className={clsx(classes.links)}
                 key={index}>
                 <ListItem
-                  selected={itemSelected === index}
+                  className={clsx({
+                    [classes.selectItem]: itemSelected === index
+                  })}
                   onClick={() => setItemSelected(index)}
                 >
-                  <ListItemIcon>
-                    <Icon className={clsx(classes.icon, 'adrian')} component={item.icon}></Icon>
+                  <ListItemIcon style={{ minWidth: 35}}>
+                    <Icon className={clsx(classes.icon)} component={item.icon}></Icon>
                   </ListItemIcon>
-                  <ListItemText className={clsx(classes.links)} primary={item.name} />
+                  <ListItemText primary={item.name} />
                 </ListItem>
                 <Divider/>
               </NavLink>

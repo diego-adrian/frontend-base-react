@@ -2,7 +2,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import { sansation, titilliumWebLight, titilliumWebRegular, titilliumWebBold} from './fonts';
 const theme = createMuiTheme({
   typography: {
-    fontFamily: ['Roboto', 'Sansation', 'Titillium Web'].join(',')
+    fontFamily: ['Titillium Web'].join(',')
   },
   overrides: {
     MuiCssBaseline: {
@@ -20,13 +20,15 @@ const theme = createMuiTheme({
       main: '#004B68'
     },
     info: {
-      main: '#1680c2'
+      main: '#1680c2',
+      light: '#E2F0F8'
     },
     error: {
       main: '#d31419'
     },
     warning: {
-      main: '#ff974f'
+      main: '#ff974f',
+      dark: '#F5924C'
     },
     success: {
       main: '#449935'

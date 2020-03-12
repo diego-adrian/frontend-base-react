@@ -1,5 +1,5 @@
 import React from 'react';
-import Routes from '../Router/Router';
+import Routes from '../Router/router';
 import { HashRouter as Router} from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core/styles';
 import theme from '../plugins/Theme';

@@ -1,7 +1,7 @@
 import React from 'react';
 
 const User = () => (
-  <h1>user</h1>
+  <div>user</div>
 );
 
 export default User;

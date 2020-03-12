@@ -43,6 +43,8 @@ const App = ({ setLogin, setStatusSidenav, history, widthSidenavOpen, widthSiden
         duration: theme.transitions.duration.leavingScreen,
       }),
       marginLeft: widthSidenavOpen,
+      marginTop: Storage.get('token') ? 50 : 0,
+      padding: Storage.get('token') ? 10 : 0
     },
     compressMode: {
       transition: theme.transitions.create('margin', {
@@ -50,6 +52,8 @@ const App = ({ setLogin, setStatusSidenav, history, widthSidenavOpen, widthSiden
         duration: theme.transitions.duration.leavingScreen,
       }),
       marginLeft: widthSidenavClose,
+      marginTop: Storage.get('token') ? 50 : 0,
+      padding: Storage.get('token') ? 10 : 0
     }
   }));
 
