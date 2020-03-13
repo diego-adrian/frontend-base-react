@@ -14,20 +14,17 @@ export const reducerLayout = (state = initialState, action) => {
         appSidenavStatus: action.payload.option,
         widthSidenavOpen: action.payload.widthSidenavOpen,
         widthSidenavClose: action.payload.widthSidenavClose
-      }
-     default:
+      };
+    default:
       return state;
   }
 };
 // actions
-export const setStatusSidenav = (option) => {
-  return {
-    type: SET_STATUS,
-    payload: {
-      option,
-      widthSidenavOpen: 280,
-      widthSidenavClose: 50
-    }
+export const setStatusSidenav = (option) => ({
+  type: SET_STATUS,
+  payload: {
+    option,
+    widthSidenavOpen: 280,
+    widthSidenavClose: 50
   }
-};
-
+});

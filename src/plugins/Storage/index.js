@@ -2,7 +2,7 @@ const APP_NAME = process.env.REACT_APP_SITENAME || 'app';
 const Storage = {
   setUser: (user) => this.set('user', user),
   getUser () {
-    return this.get('user')
+    return this.get('user');
   },
   set: (key, value) => {
     window.localStorage.setItem(`${APP_NAME}_${key}`, JSON.stringify(value));
@@ -19,7 +19,7 @@ const Storage = {
     window.localStorage.removeItem(`${APP_NAME}_${key}`);
   },
   destroy (key) {
-    this.remove(key); 
+    this.remove(key);
   },
   exist: (key) => {
     const value = window.localStorage.getItem(`${APP_NAME}_${key}`);

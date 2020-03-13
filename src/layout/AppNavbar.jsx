@@ -8,7 +8,7 @@ import { setStatusSidenav } from '../redux/layoutDuck';
 import '../assets/scss/AppNabvar.scss';
 
 const AppNavbar = ({ loggedIn, widthSidenavOpen, appSidenavStatus, widthSidenavClose, setStatusSidenav }) => {
-  const useStyles = makeStyles(theme => ({
+  const useStyles = makeStyles((theme) => ({
     root: {
       boxShadow: 'none',
       background: 'white',
@@ -44,30 +44,38 @@ const AppNavbar = ({ loggedIn, widthSidenavOpen, appSidenavStatus, widthSidenavC
     setStatusSidenav(!appSidenavStatus);
   };
   return (
-    loggedIn && <AppBar position="fixed" className={clsx(classes.root, {
-      [classes.appSidenavOpen]: appSidenavStatus,
-      [classes.appSidenavClose]: !appSidenavStatus
-    })}>
-      <Toolbar component="div" className={classes.toolbar}>
-        <IconButton aria-label="menu" onClick={statusNavbar}>
-          <Menu style={{ color: 'black' }}></Menu>
-        </IconButton>
-        <Typography className={classes.boliviaServicio}>BOLIVIA A TU SERVICIO</Typography>
-        <ul className="redes__sociales">
-          <li tooltip="Facebook">&nbsp;</li>
-          <li tooltip="Twitter">&nbsp;</li>
-          <li tooltip="Youtube">&nbsp;</li>
-          <li tooltip="Teléfono de contacto">&nbsp;</li>
-          <li tooltip="Correo electrónico">&nbsp;</li>
-          <li tooltip="Whatsapp">&nbsp;</li>
-          <li tooltip="Messenger">&nbsp;</li>
-      </ul >
-      </Toolbar>
-    </AppBar>
-  )
+    loggedIn && (
+      <AppBar
+        position="fixed"
+        className={clsx(classes.root, {
+          [classes.appSidenavOpen]: appSidenavStatus,
+          [classes.appSidenavClose]: !appSidenavStatus
+        })}
+      >
+        <Toolbar
+          component="div"
+          className={classes.toolbar}
+        >
+          <IconButton aria-label="menu" onClick={statusNavbar}>
+            <Menu style={{ color: 'black' }}/>
+          </IconButton>
+          <Typography className={classes.boliviaServicio}>BOLIVIA A TU SERVICIO</Typography>
+          <ul className="redes__sociales">
+            <li tooltip="Facebook">&nbsp;</li>
+            <li tooltip="Twitter">&nbsp;</li>
+            <li tooltip="Youtube">&nbsp;</li>
+            <li tooltip="Teléfono de contacto">&nbsp;</li>
+            <li tooltip="Correo electrónico">&nbsp;</li>
+            <li tooltip="Whatsapp">&nbsp;</li>
+            <li tooltip="Messenger">&nbsp;</li>
+          </ul >
+        </Toolbar>
+      </AppBar>
+    )
+  );
 };
 
-const mapStateToProps = ({ user: { loggedIn }, layout: { widthSidenavOpen, appSidenavStatus, widthSidenavClose }}) => ({
+const mapStateToProps = ({ user: { loggedIn }, layout: { widthSidenavOpen, appSidenavStatus, widthSidenavClose } }) => ({
   loggedIn,
   widthSidenavOpen,
   widthSidenavClose,

@@ -11,7 +11,7 @@ import Routes from './routes';
 import { setLogin } from '../redux/userDuck';
 import { setStatusSidenav } from '../redux/layoutDuck';
 
-const Location = () => Routes.map((item, idx) => <Route key={idx} path={item.path} component={item.component}></Route>);
+const Location = () => Routes.map((item, idx) => <Route key={idx} path={item.path} component={item.component} />);
 
 const App = ({ setLogin, setStatusSidenav, history, widthSidenavOpen, widthSidenavClose, appSidenavStatus }) => {
   useEffect(() => {
@@ -23,7 +23,7 @@ const App = ({ setLogin, setStatusSidenav, history, widthSidenavOpen, widthSiden
       if (pathName !== '/login' && pathName !== '/') {
         history.push(pathName);
       } else {
-        history.push('/dashboard')
+        history.push('/dashboard');
       }
     } else {
       setLogin(false);
@@ -32,7 +32,7 @@ const App = ({ setLogin, setStatusSidenav, history, widthSidenavOpen, widthSiden
     }
   }, [history.location]);
 
-  const useStyles = makeStyles(theme => ({
+  const useStyles = makeStyles((theme) => ({
     root: {
       padding: 0,
       margin: 0
@@ -59,23 +59,24 @@ const App = ({ setLogin, setStatusSidenav, history, widthSidenavOpen, widthSiden
 
   const classes = useStyles();
 
-  return(
+  return (
     <Fragment>
       <AppNavbar/>
       <AppSidenav/>
       <Box className={clsx(classes.root, {
         [classes.normalMode]: appSidenavStatus,
         [classes.compressMode]: !appSidenavStatus
-      })}>
+      })}
+      >
         <Switch>
           <Location/>
         </Switch>
       </Box>
     </Fragment>
   );
-}
+};
 
-const mapStateToProps = ({ layout: { widthSidenavOpen, widthSidenavClose, appSidenavStatus}}) => ({
+const mapStateToProps = ({ layout: { widthSidenavOpen, widthSidenavClose, appSidenavStatus } }) => ({
   widthSidenavOpen,
   widthSidenavClose,
   appSidenavStatus

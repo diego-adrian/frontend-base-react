@@ -10,17 +10,15 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         loggedIn: action.payload.loggedIn
-      }
-    default: 
-      return state; 
+      };
+    default:
+      return state;
   }
 };
 // actions (actions creator)
-export const setLogin = (loggedIn) => {
-  return {
-    type: LOGIN,
-    payload: {
-      loggedIn
-    }
+export const setLogin = (loggedIn) => ({
+  type: LOGIN,
+  payload: {
+    loggedIn
   }
-};
+});

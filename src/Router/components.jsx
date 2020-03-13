@@ -1,4 +1,5 @@
 import React, { lazy, Suspense } from 'react';
+
 const LazyLogin = lazy(() => import('../components/Login'));
 const LazyDashboard = lazy(() => import('../components/Dashboard'));
 const LazyUser = lazy(() => import('../components/User'));

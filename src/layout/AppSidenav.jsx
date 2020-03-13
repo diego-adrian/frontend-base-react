@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { 
+import {
   Drawer,
   List,
   Icon,
@@ -23,14 +23,14 @@ import { AssignmentInd, FolderShared } from '@material-ui/icons';
 import Routes from '../Router/routes';
 import Storage from '../plugins/Storage';
 
-const Sidebar = ({loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatus}) => {
+const Sidebar = ({ loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatus }) => {
   const [itemSelected, setItemSelected] = useState(0);
   const [state, setState] = useState({
     popupUserInfo: null,
     title: 'frontend base',
     user: Storage.getUser()
   });
-  const useStyles = makeStyles(theme => ({
+  const useStyles = makeStyles((theme) => ({
     root: {
       display: 'flex'
     },
@@ -68,8 +68,7 @@ const Sidebar = ({loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatu
       '& span': {
         color: '#FFF',
         fontSize: '14px'
-      },
-      
+      }
     },
     selectItem: {
       backgroundColor: theme.palette.info.main,
@@ -129,17 +128,17 @@ const Sidebar = ({loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatu
   }));
 
   const handleUserInfo = (event) => {
-    setState(state => ({
+    setState((state) => ({
       ...state,
       popupUserInfo: event.currentTarget
-    }))
+    }));
   };
 
   const handleCloseUserInfo = () => {
-    setState(state => ({
+    setState((state) => ({
       ...state,
       popupUserInfo: null
-    }))
+    }));
   };
 
   const classes = useStyles();
@@ -161,12 +160,15 @@ const Sidebar = ({loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatu
         variant="permanent"
       >
         <List aria-label="header" className={classes.header}>
-          <ListItem style={{ paddingLeft: 10, paddingRight: 10}}>
-            <Button 
+          <ListItem
+            style={{ paddingLeft: 10, paddingRight: 10 }}
+          >
+            <Button
               className={classes.btnUserInfo}
-              aria-controls="user-info" 
+              aria-controls="user-info"
               aria-haspopup="true"
-              onClick={handleUserInfo}>
+              onClick={handleUserInfo}
+            >
               { state.title.charAt(0) }
             </Button>
             <Menu
@@ -182,7 +184,7 @@ const Sidebar = ({loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatu
               }}
             >
               <Card elevation={0} className={classes.card}>
-                <CardContent style={{ padding: 8}}>
+                <CardContent style={{ padding: 8 }}>
                   <Grid container>
                     <Grid item xs={3} sm={3} md={3} xl={3}>
                       <Box textAlign="center">
@@ -199,7 +201,7 @@ const Sidebar = ({loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatu
                 </CardContent>
               </Card>
               <Divider/>
-              <MenuItem className={clsx(classes.logout)}  onClick={handleCloseUserInfo}>
+              <MenuItem className={clsx(classes.logout)} onClick={handleCloseUserInfo}>
                 <Box mr={1} pt={1}><FolderShared/></Box>
                 <Box>Cerrar Sesion</Box>
               </MenuItem>
@@ -210,30 +212,31 @@ const Sidebar = ({loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatu
         {/* INFORMACION DEL USUARIO */}
         <section className="user--information">
           <section className="user--information_logo">
-          { state.user ? state.user.nombres.charAt(0)  : ''}
+            { state.user ? state.user.nombres.charAt(0) : ''}
           </section>
           <section className="user--information_name">
-            { state.user ? state.user.nombres  : ''}
+            { state.user ? state.user.nombres : ''}
           </section>
           <section className="user--information_email">
-          { state.user ? state.user.email  : ''}
+            { state.user ? state.user.email : ''}
           </section>
         </section>
         <Divider/>
         <List aria-label="routes" style={{ paddingTop: 1 }}>
           {Routes.map((item, index) => (
-            <NavLink 
+            <NavLink
               to={item.path}
               className={clsx(classes.links)}
-              key={index}>
+              key={index}
+            >
               <ListItem
                 className={clsx({
                   [classes.selectItem]: itemSelected === index
                 })}
                 onClick={() => setItemSelected(index)}
               >
-                <ListItemIcon style={{ minWidth: 35}}>
-                  <Icon className={clsx(classes.icon)} component={item.icon}></Icon>
+                <ListItemIcon style={{ minWidth: 35 }}>
+                  <Icon className={clsx(classes.icon)} component={item.icon}/>
                 </ListItemIcon>
                 <ListItemText primary={item.name} />
               </ListItem>
@@ -243,10 +246,10 @@ const Sidebar = ({loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatu
         </List>
       </Drawer>
     </div>
-  )
+  );
 };
 
-const mapStateToProps = ({ user: { loggedIn }, layout: { widthSidenavOpen, appSidenavStatus, widthSidenavClose }}) => ({
+const mapStateToProps = ({ user: { loggedIn }, layout: { widthSidenavOpen, appSidenavStatus, widthSidenavClose } }) => ({
   loggedIn,
   widthSidenavOpen,
   appSidenavStatus,
