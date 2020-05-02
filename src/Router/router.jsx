@@ -15,6 +15,7 @@ const Location = () => Routes.map((item, idx) => <Route key={idx} path={item.pat
 
 const App = ({ setLogin, setStatusSidenav, history, widthSidenavOpen, widthSidenavClose, appSidenavStatus }) => {
   useEffect(() => {
+    console.log('USE EFFECT ROUTER');
     const token = Storage.get('token');
     if (token) {
       const pathName = history.location.pathname;

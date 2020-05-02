@@ -20,6 +20,8 @@ import {
   Card
 } from '@material-ui/core';
 import { AssignmentInd, FolderShared } from '@material-ui/icons';
+import { setLogin } from '../redux/userDuck';
+import { setStatusSidenav } from '../redux/layoutDuck';
 import Routes from '../Router/routes';
 import Storage from '../plugins/Storage';
 
@@ -139,6 +141,8 @@ const Sidebar = ({ loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStat
       ...state,
       popupUserInfo: null
     }));
+    setLogin(false);
+    setStatusSidenav(false);
   };
 
   const classes = useStyles();
@@ -169,7 +173,7 @@ const Sidebar = ({ loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStat
               aria-haspopup="true"
               onClick={handleUserInfo}
             >
-              { state.title.charAt(0) }
+              { state.title ? state.title.charAt(0) : '' }
             </Button>
             <Menu
               id="user-info"
@@ -193,7 +197,7 @@ const Sidebar = ({ loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStat
                     </Grid>
                     <Grid item xs={9} sm={9} md={9} xl={9}>
                       <Box>
-                        { state.user ? `${state.user.nombres} ${state.user.primer_apellido} ${state.user.segundo_apellido}` : '' }
+                        { state.user && state.user.nombres ? `${state.user.nombres} ${state.user.primer_apellido} ${state.user.segundo_apellido}` : 'USUARIO LOGUEADO S/N' }
                       </Box>
                       <Box>{ state.user ? state.user.email : ''}</Box>
                     </Grid>
@@ -212,13 +216,13 @@ const Sidebar = ({ loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStat
         {/* INFORMACION DEL USUARIO */}
         <section className="user--information">
           <section className="user--information_logo">
-            { state.user ? state.user.nombres.charAt(0) : ''}
+            { state.user && state.user.nombres ? state.user.nombres.charAt(0) : 'U'}
           </section>
           <section className="user--information_name">
-            { state.user ? state.user.nombres : ''}
+            { state.user && state.user.nombres ? state.user.nombres : 'Usuario S/N'}
           </section>
           <section className="user--information_email">
-            { state.user ? state.user.email : ''}
+            { state.user && state.user.email ? state.user.email : 'Email S/N'}
           </section>
         </section>
         <Divider/>
@@ -256,4 +260,4 @@ const mapStateToProps = ({ user: { loggedIn }, layout: { widthSidenavOpen, appSi
   widthSidenavClose
 });
 
-export default connect(mapStateToProps)(Sidebar);
+export default connect(mapStateToProps, { setLogin, setStatusSidenav })(Sidebar);
