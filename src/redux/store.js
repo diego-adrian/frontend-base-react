@@ -1,10 +1,12 @@
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
-import { reducer } from './userDuck';
+import { reducerUser } from './userDuck';
+import { reducerPlugins } from './pluginsDuck';
 import { reducerLayout } from './layoutDuck';
 
 const rootReducer = combineReducers({
-  user: reducer,
-  layout: reducerLayout
+  user: reducerUser,
+  layout: reducerLayout,
+  plugins: reducerPlugins
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

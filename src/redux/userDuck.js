@@ -4,7 +4,7 @@ const initialState = {
 };
 const LOGIN = 'LOGIN';
 // reducer
-export const reducer = (state = initialState, action) => {
+export const reducerUser = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN:
       return {

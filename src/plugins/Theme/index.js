@@ -22,18 +22,25 @@ const theme = createMuiTheme({
       dark: '#001219'
     },
     info: {
-      main: '#1680c2',
-      light: '#E2F0F8'
+      light: '#64b5f6',
+      main: '#2196f3',
+      dark: '#1976d2'
     },
     error: {
-      main: '#d31419'
+      light: '#e57373',
+      main: '#f44336',
+      dark: '#d32f2f',
+      contrastText: '#fff'
     },
     warning: {
-      main: '#ff974f',
-      dark: '#F5924C'
+      light: '#ffb74d',
+      main: '#ff9800',
+      dark: '#f57c00'
     },
     success: {
-      main: '#449935'
+      light: '#81c784',
+      main: '#4caf50',
+      dark: '#388e3c'
     }
   }
 });

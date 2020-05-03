@@ -5,15 +5,15 @@ import { Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import AppNavbar from '../layout/AppNavbar';
-import Storage from '../plugins/Storage';
 import AppSidenav from '../layout/AppSidenav';
+import Message from '../plugins/Message';
 import Routes from './routes';
 import { setLogin } from '../redux/userDuck';
 import { setStatusSidenav } from '../redux/layoutDuck';
 
 const Location = () => Routes.map((item, idx) => <Route key={idx} path={item.path} component={item.component} />);
 
-const App = ({ loggedIn, setLogin, setStatusSidenav, history, widthSidenavOpen, widthSidenavClose, appSidenavStatus }) => {
+const App = ({ Storage, loggedIn, setLogin, setStatusSidenav, history, widthSidenavOpen, widthSidenavClose, appSidenavStatus }) => {
   useEffect(() => {
     console.log('USE EFFECT ROUTER');
     const token = Storage.get('token');
@@ -66,6 +66,7 @@ const App = ({ loggedIn, setLogin, setStatusSidenav, history, widthSidenavOpen, 
     <Fragment>
       <AppNavbar/>
       <AppSidenav/>
+      <Message/>
       <Box className={clsx(classes.root, {
         [classes.normalMode]: appSidenavStatus,
         [classes.compressMode]: !appSidenavStatus
@@ -79,7 +80,8 @@ const App = ({ loggedIn, setLogin, setStatusSidenav, history, widthSidenavOpen, 
   );
 };
 
-const mapStateToProps = ({ user: { loggedIn }, layout: { widthSidenavOpen, widthSidenavClose, appSidenavStatus } }) => ({
+const mapStateToProps = ({ plugins: { Storage }, user: { loggedIn }, layout: { widthSidenavOpen, widthSidenavClose, appSidenavStatus } }) => ({
+  Storage,
   loggedIn,
   widthSidenavOpen,
   widthSidenavClose,

@@ -127,6 +127,9 @@ const Login = () => {
       }
     }));
   };
+  const loginWithCredentials = () => {
+
+  };
   const handleChangeView = () => {
     setState((state) => ({
       ...state,
@@ -229,7 +232,7 @@ const Login = () => {
                       </FormControl>
                     </GridCustomized>
                     <Grid item container md={12} xs={12} sm={12} xl={12}>
-                      <Button color="primary" onClick={loginOpenid} className="app-login__boton">Ingresar al Sistema</Button>
+                      <Button color="primary" onClick={loginWithCredentials} className="app-login__boton">Ingresar al Sistema</Button>
                     </Grid>
                     <Grid item container md={12} xs={12} sm={12} xl={12}>
                       <Button color="primary" onClick={handleChangeView} className="app-login__boton--txt fs9">Regresar al login principal</Button>

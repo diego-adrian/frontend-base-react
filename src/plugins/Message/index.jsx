@@ -1,25 +1,27 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Snackbar } from '@material-ui/core';
-const Message = ({ message }) => {
-  const [open, setOpen] = useState(false);
+import { Alert } from '@material-ui/lab';
+import { connect } from 'react-redux';
+import { closeMessage } from '../../redux/pluginsDuck';
 
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') return;
-    setOpen(true);
-  }
+const Messages = ({ show, message, theme, timeout, closeMessage }) => (
+  <Snackbar
+    anchorOrigin={{
+      vertical: 'top',
+      horizontal: 'right'
+    }}
+    open={show}
+    autoHideDuration={timeout || 5000}
+    onClose={closeMessage}
+  >
+    <Alert onClose={closeMessage} severity={theme}>{message}</Alert>
+  </Snackbar>
+);
+const mapStateToProps = ({ plugins: { Message: { show, message, theme, timeout } } }) => ({
+  show,
+  message,
+  theme,
+  timeout
+});
 
-  return (
-    <Snackbar
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right'
-      }}
-      open={open}
-      autoHideDuration={5000}
-      onClose={handleClose}
-      message={message}
-    ></Snackbar>
-  )
-};
-
-export default Message;
+export default connect(mapStateToProps, { closeMessage })(Messages);
