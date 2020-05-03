@@ -137,12 +137,12 @@ const Sidebar = ({ loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStat
   };
 
   const handleCloseUserInfo = () => {
+    setLogin(false);
+    setStatusSidenav(false);
     setState((state) => ({
       ...state,
       popupUserInfo: null
     }));
-    setLogin(false);
-    setStatusSidenav(false);
   };
 
   const classes = useStyles();

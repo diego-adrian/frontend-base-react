@@ -13,7 +13,7 @@ import { setStatusSidenav } from '../redux/layoutDuck';
 
 const Location = () => Routes.map((item, idx) => <Route key={idx} path={item.path} component={item.component} />);
 
-const App = ({ setLogin, setStatusSidenav, history, widthSidenavOpen, widthSidenavClose, appSidenavStatus }) => {
+const App = ({ loggedIn, setLogin, setStatusSidenav, history, widthSidenavOpen, widthSidenavClose, appSidenavStatus }) => {
   useEffect(() => {
     console.log('USE EFFECT ROUTER');
     const token = Storage.get('token');
@@ -29,7 +29,9 @@ const App = ({ setLogin, setStatusSidenav, history, widthSidenavOpen, widthSiden
     } else {
       setLogin(false);
       setStatusSidenav(false);
-      history.push('/login');
+      if (history.location.pathname !== '/login') {
+        history.push('/login');
+      }
     }
   }, [history.location]);
 
@@ -52,7 +54,7 @@ const App = ({ setLogin, setStatusSidenav, history, widthSidenavOpen, widthSiden
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
-      marginLeft: widthSidenavClose,
+      marginLeft: loggedIn ? widthSidenavClose : 0,
       marginTop: Storage.get('token') ? 50 : 0,
       padding: Storage.get('token') ? 10 : 0
     }
@@ -77,7 +79,8 @@ const App = ({ setLogin, setStatusSidenav, history, widthSidenavOpen, widthSiden
   );
 };
 
-const mapStateToProps = ({ layout: { widthSidenavOpen, widthSidenavClose, appSidenavStatus } }) => ({
+const mapStateToProps = ({ user: { loggedIn }, layout: { widthSidenavOpen, widthSidenavClose, appSidenavStatus } }) => ({
+  loggedIn,
   widthSidenavOpen,
   widthSidenavClose,
   appSidenavStatus

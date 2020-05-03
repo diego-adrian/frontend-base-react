@@ -14,7 +14,6 @@ export const User = () => (
     <LazyUser/>
   </Suspense>
 );
-
 export const DashboardPage = () => (
   <Suspense fallback={<div className="app--suspense">Cargando el dashboard, espere unos segundos por favor ...</div>}>
     <LazyDashboard/>
