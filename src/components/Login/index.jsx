@@ -2,12 +2,14 @@ import React, { Fragment, useState } from 'react';
 import { Container, Grid, Button, Paper, Fade, Zoom, FormControlLabel, Box, IconButton, InputAdornment, FormControl, InputLabel, OutlinedInput, Switch, TextField } from '@material-ui/core';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { setLogin } from '../../redux/userDuck';
+import { setStatusSidenav } from '../../redux/layoutDuck';
 import Footer from '../../layout/Footer';
 import Auth from './auth';
+import { MessageError, MessageWarning, MessageSuccess } from '../../redux/pluginsDuck';
 import './Login.scss';
 
 const GridCustomized = withStyles({
@@ -79,8 +81,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Login = () => {
+const Login = ({ Storage, setLogin, setStatusSidenav, Service, MessageError, MessageWarning, MessageSuccess }) => {
   console.log('LOGIN');
+  const history = useHistory();
   const classes = useStyles();
   const [formState, setFormState] = useState({
     showPassword: false,
@@ -127,8 +130,45 @@ const Login = () => {
       }
     }));
   };
-  const loginWithCredentials = () => {
-
+  const loginWithCredentials = async (event) => {
+    try {
+      event.preventDefault();
+      if ((formState.values.user || '').length > 0 && (formState.values.password || '').length > 0) {
+        const response = await Service.post('api/public/login', {
+          usuario: formState.values.user,
+          password: formState.values.password
+        });
+        if (!response) throw new Error('Existen problemas de conexión. Por favor revise su configuración a Internet.');
+        if (response.finalizado) {
+          Storage.set('user', response.datos.usuario);
+          Storage.set('roles', response.datos.roles);
+          Storage.set('token', response.datos.token);
+          Storage.set('menu', response.datos.menu);
+          Storage.set('sidenav', true);
+          history.push('/dashboard');
+          MessageSuccess('Acceso exitosamente correcto');
+          setLogin(true);
+          setStatusSidenav(true);
+        } else {
+          throw new Error(response.mensaje);
+        }
+      } else {
+        setFormState(formState => ({
+          ...formState,
+          errors: {
+            user: !(formState.values.user || '').length > 0,
+            password: !(formState.values.password || '').length > 0
+          },
+          touched: {
+            user: true,
+            password: true
+          }
+        }));
+        MessageWarning('Faltan campos por llenar');
+      }
+    } catch (error) {
+      MessageError(error.message);
+    }
   };
   const handleChangeView = () => {
     setState((state) => ({
@@ -232,7 +272,7 @@ const Login = () => {
                       </FormControl>
                     </GridCustomized>
                     <Grid item container md={12} xs={12} sm={12} xl={12}>
-                      <Button color="primary" onClick={loginWithCredentials} className="app-login__boton">Ingresar al Sistema</Button>
+                      <Button color="primary" type="submit" onClick={(e) => loginWithCredentials(e)} className="app-login__boton">Ingresar al Sistema</Button>
                     </Grid>
                     <Grid item container md={12} xs={12} sm={12} xl={12}>
                       <Button color="primary" onClick={handleChangeView} className="app-login__boton--txt fs9">Regresar al login principal</Button>
@@ -249,4 +289,9 @@ const Login = () => {
   );
 };
 
-export default withRouter(connect(null, { setLogin })(Login));
+const mapStateToProps = ({ plugins: { Service, Storage } }) => ({
+  Service,
+  Storage
+});
+
+export default connect(mapStateToProps, { setStatusSidenav, setLogin, MessageError, MessageWarning, MessageSuccess })(Login);

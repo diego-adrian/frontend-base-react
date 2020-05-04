@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
 import clsx from 'clsx';
-import { Switch, Route, withRouter } from 'react-router-dom';
+import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
 import { Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
@@ -13,27 +13,21 @@ import { setStatusSidenav } from '../redux/layoutDuck';
 
 const Location = () => Routes.map((item, idx) => <Route key={idx} path={item.path} component={item.component} />);
 
-const App = ({ Storage, loggedIn, setLogin, setStatusSidenav, history, widthSidenavOpen, widthSidenavClose, appSidenavStatus }) => {
+const App = ({ Storage, loggedIn, setLogin, setStatusSidenav, widthSidenavOpen, widthSidenavClose, appSidenavStatus }) => {
+  const location = useLocation();
+  const history = useHistory();
   useEffect(() => {
     console.log('USE EFFECT ROUTER');
     const token = Storage.get('token');
     if (token) {
-      const pathName = history.location.pathname;
       setLogin(true);
       setStatusSidenav(true);
-      if (pathName !== '/login' && pathName !== '/') {
-        history.push(pathName);
-      } else {
-        history.push('/dashboard');
-      }
     } else {
       setLogin(false);
       setStatusSidenav(false);
-      if (history.location.pathname !== '/login') {
-        history.push('/login');
-      }
+      history.push('/login');
     }
-  }, [history.location]);
+  }, [location]);
 
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -88,4 +82,4 @@ const mapStateToProps = ({ plugins: { Storage }, user: { loggedIn }, layout: { w
   appSidenavStatus
 });
 
-export default withRouter(connect(mapStateToProps, { setLogin, setStatusSidenav })(App));
+export default connect(mapStateToProps, { setLogin, setStatusSidenav })(App);

@@ -1,7 +1,9 @@
 import Storage from '../plugins/Storage';
+import Service from '../plugins/Service';
 // Initial State
 const initialState = {
   Storage,
+  Service,
   Message: {
     show: false,
     message: null,
@@ -10,7 +12,6 @@ const initialState = {
   }
 };
 // Constants
-const GET_STORAGE = 'GET_STORAGE';
 const OPEN_MESSAGE_SUCCESS = 'OPEN_MESSAGE_SUCCESS';
 const OPEN_MESSAGE_INFO = 'OPEN_MESSAGE_INFO';
 const OPEN_MESSAGE_WARNING = 'OPEN_MESSAGE_WARNING';
@@ -74,31 +75,28 @@ export const reducerPlugins = (state = initialState, action) => {
 };
 
 // Actions
-export const getStorage = () => ({
-  type: GET_STORAGE
-});
-export const Success = (message, theme = 'success') => ({
+export const MessageSuccess = (message, theme = 'success') => ({
   type: OPEN_MESSAGE_SUCCESS,
   payload: {
     message,
     theme
   }
 });
-export const Info = (message, theme = 'info') => ({
+export const MessageInfo = (message, theme = 'info') => ({
   type: OPEN_MESSAGE_INFO,
   payload: {
     message,
     theme
   }
 });
-export const Warning = (message, theme = 'warning') => ({
+export const MessageWarning = (message, theme = 'warning') => ({
   type: OPEN_MESSAGE_WARNING,
   payload: {
     message,
     theme
   }
 });
-export const Error = (message, theme = 'error') => ({
+export const MessageError = (message, theme = 'error') => ({
   type: OPEN_MESSAGE_ERROR,
   payload: {
     message,

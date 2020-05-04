@@ -8,19 +8,13 @@
     "@material-ui/core": "^4.9.12",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.51",
-    "@testing-library/jest-dom": "^5.5.0",
-    "@testing-library/react": "^10.0.4",
-    "@testing-library/user-event": "^10.1.0",
     "axios": "^0.19.2",
-    "express": "^4.17.1",
-    "moment": "^2.25.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
     "redux": "^4.0.5",
-    "redux-devtools": "^3.5.0",
     "redux-thunk": "^2.3.0",
     "typeface-roboto": "0.0.75"
   },
@@ -56,7 +50,11 @@
       "react/jsx-filename-extension": "off",
       "space-before-function-paren": "off",
       "no-restricted-syntax": "off",
-      "guard-for-in": "off"
+      "guard-for-in": "off",
+      "arrow-parens": "off",
+      "no-async-promise-executor": "off",
+      "consistent-return": "off",
+      "no-param-reassign": "off"
     }
   },
   "browserslist": {
@@ -74,6 +72,7 @@
   "devDependencies": {
     "eslint-config-airbnb": "^18.1.0",
     "node-sass": "^4.14.0",
+    "redux-devtools": "^3.5.0",
     "redux-devtools-extension": "^2.13.8"
   }
 }
