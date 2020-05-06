@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
-import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { NavLink, useHistory } from 'react-router-dom';
 import {
   Drawer,
   List,
@@ -19,13 +19,21 @@ import {
   Box,
   Card
 } from '@material-ui/core';
-import { AssignmentInd, FolderShared } from '@material-ui/icons';
+import { AssignmentInd, FolderShared, Apartment } from '@material-ui/icons';
 import { setLogin } from '../redux/userDuck';
 import { setStatusSidenav } from '../redux/layoutDuck';
-import Routes from '../Router/routes';
 import Storage from '../plugins/Storage';
 
-const Sidebar = ({ loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatus }) => {
+const Sidebar = () => {
+  const Routes = Storage.get('menu');
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const { loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatus } = useSelector(state => ({
+    loggedIn: state.user.loggedIn,
+    widthSidenavOpen: state.layout.widthSidenavOpen,
+    widthSidenavClose: state.layout.widthSidenavClose,
+    appSidenavStatus: state.layout.appSidenavStatus
+  }), shallowEqual);
   const [itemSelected, setItemSelected] = useState(0);
   const [state, setState] = useState({
     popupUserInfo: null,
@@ -137,12 +145,17 @@ const Sidebar = ({ loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStat
   };
 
   const handleCloseUserInfo = () => {
-    setLogin(false);
-    setStatusSidenav(false);
+    Storage.remove('menu');
+    Storage.remove('token');
+    Storage.remove('user');
+    Storage.remove('sidenav');
+    dispatch(setLogin(false));
+    dispatch(setStatusSidenav(false));
     setState((state) => ({
       ...state,
       popupUserInfo: null
     }));
+    history.push('/login');
   };
 
   const classes = useStyles();
@@ -229,7 +242,7 @@ const Sidebar = ({ loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStat
         <List aria-label="routes" style={{ paddingTop: 1 }}>
           {Routes.map((item, index) => (
             <NavLink
-              to={item.path}
+              to={item.url}
               className={clsx(classes.links)}
               key={index}
             >
@@ -240,9 +253,9 @@ const Sidebar = ({ loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStat
                 onClick={() => setItemSelected(index)}
               >
                 <ListItemIcon style={{ minWidth: 35 }}>
-                  <Icon className={clsx(classes.icon)} component={item.icon}/>
+                  <Icon className={clsx(classes.icon)} component={Apartment}/>
                 </ListItemIcon>
-                <ListItemText primary={item.name} />
+                <ListItemText primary={item.label} />
               </ListItem>
               <Divider/>
             </NavLink>
@@ -253,11 +266,4 @@ const Sidebar = ({ loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStat
   );
 };
 
-const mapStateToProps = ({ user: { loggedIn }, layout: { widthSidenavOpen, appSidenavStatus, widthSidenavClose } }) => ({
-  loggedIn,
-  widthSidenavOpen,
-  appSidenavStatus,
-  widthSidenavClose
-});
-
-export default connect(mapStateToProps, { setLogin, setStatusSidenav })(Sidebar);
+export default Sidebar;

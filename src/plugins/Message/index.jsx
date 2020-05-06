@@ -20,9 +20,9 @@ const Messages = () => {
       }}
       open={show}
       autoHideDuration={timeout || 5000}
-      onClose={() => dispatch(closeMessage)}
+      onClose={() => dispatch(closeMessage())}
     >
-      <Alert onClose={() => dispatch(closeMessage)} severity={theme}>{message}</Alert>
+      <Alert onClose={() => dispatch(closeMessage())} severity={theme}>{message}</Alert>
     </Snackbar>
   );
 };

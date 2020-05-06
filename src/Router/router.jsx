@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import clsx from 'clsx';
-import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom';
+import { HashRouter as Router, Switch, Route, useHistory } from 'react-router-dom';
 import { Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
@@ -15,7 +15,6 @@ import { setStatusSidenav } from '../redux/layoutDuck';
 const Location = () => Routes.map((item, idx) => <Route key={idx} path={item.path} component={item.component} />);
 
 const AppRouter = () => {
-  // Usando hooks para react-redux
   const dispatch = useDispatch();
   const { widthSidenavOpen, widthSidenavClose, appSidenavStatus, loggedIn } = useSelector(state => ({
     widthSidenavOpen: state.layout.widthSidenavOpen,
@@ -74,10 +73,11 @@ const AppRouter = () => {
         [classes.normalMode]: appSidenavStatus,
         [classes.compressMode]: !appSidenavStatus
       })}
-      />
-      <Switch>
-        <Location/>
-      </Switch>
+      >
+        <Switch>
+          <Location/>
+        </Switch>
+      </Box>
     </Router>
   );
 };
