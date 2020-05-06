@@ -1,9 +1,9 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import clsx from 'clsx';
-import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom';
 import { Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { connect } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import AppNavbar from '../layout/AppNavbar';
 import AppSidenav from '../layout/AppSidenav';
 import Message from '../plugins/Message';
@@ -14,21 +14,29 @@ import { setStatusSidenav } from '../redux/layoutDuck';
 
 const Location = () => Routes.map((item, idx) => <Route key={idx} path={item.path} component={item.component} />);
 
-const App = ({ loggedIn, setLogin, setStatusSidenav, widthSidenavOpen, widthSidenavClose, appSidenavStatus }) => {
-  const location = useLocation();
+const AppRouter = () => {
+  // Usando hooks para react-redux
+  const dispatch = useDispatch();
+  const { widthSidenavOpen, widthSidenavClose, appSidenavStatus, loggedIn } = useSelector(state => ({
+    widthSidenavOpen: state.layout.widthSidenavOpen,
+    widthSidenavClose: state.layout.widthSidenavClose,
+    appSidenavStatus: state.layout.appSidenavStatus,
+    loggedIn: state.user.loggedIn
+  }), shallowEqual);
+
   const history = useHistory();
   useEffect(() => {
     console.log('USE EFFECT ROUTER');
     const token = Storage.get('token');
     if (token) {
-      setLogin(true);
-      setStatusSidenav(true);
+      dispatch(setLogin(true));
+      dispatch(setStatusSidenav(true));
     } else {
-      setLogin(false);
-      setStatusSidenav(false);
+      dispatch(setLogin(false));
+      dispatch(setStatusSidenav(false));
       history.push('/login');
     }
-  }, [location, setLogin, setStatusSidenav, history]);
+  }, [dispatch, history]);
 
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -58,7 +66,7 @@ const App = ({ loggedIn, setLogin, setStatusSidenav, widthSidenavOpen, widthSide
   const classes = useStyles();
 
   return (
-    <Fragment>
+    <Router>
       <AppNavbar/>
       <AppSidenav/>
       <Message/>
@@ -66,20 +74,12 @@ const App = ({ loggedIn, setLogin, setStatusSidenav, widthSidenavOpen, widthSide
         [classes.normalMode]: appSidenavStatus,
         [classes.compressMode]: !appSidenavStatus
       })}
-      >
-        <Switch>
-          <Location/>
-        </Switch>
-      </Box>
-    </Fragment>
+      />
+      <Switch>
+        <Location/>
+      </Switch>
+    </Router>
   );
 };
 
-const mapStateToProps = ({ user: { loggedIn }, layout: { widthSidenavOpen, widthSidenavClose, appSidenavStatus } }) => ({
-  loggedIn,
-  widthSidenavOpen,
-  widthSidenavClose,
-  appSidenavStatus
-});
-
-export default connect(mapStateToProps, { setLogin, setStatusSidenav })(App);
+export default AppRouter;
