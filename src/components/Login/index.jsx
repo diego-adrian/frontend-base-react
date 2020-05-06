@@ -9,6 +9,8 @@ import { setLogin } from '../../redux/userDuck';
 import { setStatusSidenav } from '../../redux/layoutDuck';
 import Footer from '../../layout/Footer';
 import Auth from './auth';
+import Service from '../../plugins/Service';
+import Storage from '../../plugins/Storage';
 import { MessageError, MessageWarning, MessageSuccess } from '../../redux/pluginsDuck';
 import './Login.scss';
 
@@ -81,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Login = ({ Storage, setLogin, setStatusSidenav, Service, MessageError, MessageWarning, MessageSuccess }) => {
+const Login = ({ setLogin, setStatusSidenav, MessageError, MessageWarning, MessageSuccess }) => {
   console.log('LOGIN');
   const history = useHistory();
   const classes = useStyles();
@@ -289,9 +291,4 @@ const Login = ({ Storage, setLogin, setStatusSidenav, Service, MessageError, Mes
   );
 };
 
-const mapStateToProps = ({ plugins: { Service, Storage } }) => ({
-  Service,
-  Storage
-});
-
-export default connect(mapStateToProps, { setStatusSidenav, setLogin, MessageError, MessageWarning, MessageSuccess })(Login);
+export default connect(null, { setStatusSidenav, setLogin, MessageError, MessageWarning, MessageSuccess })(Login);

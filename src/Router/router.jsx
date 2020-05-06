@@ -7,13 +7,14 @@ import { connect } from 'react-redux';
 import AppNavbar from '../layout/AppNavbar';
 import AppSidenav from '../layout/AppSidenav';
 import Message from '../plugins/Message';
+import Storage from '../plugins/Storage';
 import Routes from './routes';
 import { setLogin } from '../redux/userDuck';
 import { setStatusSidenav } from '../redux/layoutDuck';
 
 const Location = () => Routes.map((item, idx) => <Route key={idx} path={item.path} component={item.component} />);
 
-const App = ({ Storage, loggedIn, setLogin, setStatusSidenav, widthSidenavOpen, widthSidenavClose, appSidenavStatus }) => {
+const App = ({ loggedIn, setLogin, setStatusSidenav, widthSidenavOpen, widthSidenavClose, appSidenavStatus }) => {
   const location = useLocation();
   const history = useHistory();
   useEffect(() => {
@@ -27,7 +28,7 @@ const App = ({ Storage, loggedIn, setLogin, setStatusSidenav, widthSidenavOpen, 
       setStatusSidenav(false);
       history.push('/login');
     }
-  }, [location]);
+  }, [location, setLogin, setStatusSidenav, history]);
 
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -74,8 +75,7 @@ const App = ({ Storage, loggedIn, setLogin, setStatusSidenav, widthSidenavOpen, 
   );
 };
 
-const mapStateToProps = ({ plugins: { Storage }, user: { loggedIn }, layout: { widthSidenavOpen, widthSidenavClose, appSidenavStatus } }) => ({
-  Storage,
+const mapStateToProps = ({ user: { loggedIn }, layout: { widthSidenavOpen, widthSidenavClose, appSidenavStatus } }) => ({
   loggedIn,
   widthSidenavOpen,
   widthSidenavClose,
