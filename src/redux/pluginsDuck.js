@@ -1,9 +1,5 @@
-import Storage from '../plugins/Storage';
-import Service from '../plugins/Service';
 // Initial State
 const initialState = {
-  Storage,
-  Service,
   Message: {
     show: false,
     message: null,
