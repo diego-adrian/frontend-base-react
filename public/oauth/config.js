@@ -1,7 +1,7 @@
 const config = {
   backendApi: 'http://localhost:3000',
   subdomain: 'http://localhost:8080', // subdominio donde está instalado el frontend si está en la raiz se colocar vacio
-  page: 'dashboard', // pagina que a la que redireccionara
+  page: 'usuarios', // pagina que a la que redireccionara
   appName: 'app' // prefijo para los localstorage del sistema
 };
 

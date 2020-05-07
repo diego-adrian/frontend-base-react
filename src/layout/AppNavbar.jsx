@@ -3,11 +3,18 @@ import clsx from 'clsx';
 import { AppBar, Toolbar, IconButton, Typography } from '@material-ui/core';
 import { Menu } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { setStatusSidenav } from '../redux/layoutDuck';
 import '../assets/scss/AppNabvar.scss';
 
-const AppNavbar = ({ loggedIn, widthSidenavOpen, appSidenavStatus, widthSidenavClose, setStatusSidenav }) => {
+const AppNavbar = () => {
+  const dispatch = useDispatch();
+  const { loggedIn, widthSidenavOpen, appSidenavStatus, widthSidenavClose } = useSelector(state => ({
+    loggedIn: state.user.loggedIn,
+    widthSidenavOpen: state.layout.widthSidenavOpen,
+    widthSidenavClose: state.layout.widthSidenavClose,
+    appSidenavStatus: state.layout.appSidenavStatus
+  }), shallowEqual);
   const useStyles = makeStyles((theme) => ({
     root: {
       boxShadow: 'none',
@@ -41,7 +48,7 @@ const AppNavbar = ({ loggedIn, widthSidenavOpen, appSidenavStatus, widthSidenavC
   }));
   const classes = useStyles();
   const statusNavbar = () => {
-    setStatusSidenav(!appSidenavStatus);
+    dispatch(setStatusSidenav(!appSidenavStatus));
   };
   return (
     loggedIn && (
@@ -75,11 +82,4 @@ const AppNavbar = ({ loggedIn, widthSidenavOpen, appSidenavStatus, widthSidenavC
   );
 };
 
-const mapStateToProps = ({ user: { loggedIn }, layout: { widthSidenavOpen, appSidenavStatus, widthSidenavClose } }) => ({
-  loggedIn,
-  widthSidenavOpen,
-  widthSidenavClose,
-  appSidenavStatus
-});
-
-export default connect(mapStateToProps, { setStatusSidenav })(AppNavbar);
+export default AppNavbar;

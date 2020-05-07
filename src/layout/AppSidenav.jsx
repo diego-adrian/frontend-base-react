@@ -9,7 +9,6 @@ import {
   Icon,
   ListItem,
   ListItemIcon,
-  Grid,
   ListItemText,
   Divider,
   Button,
@@ -202,25 +201,23 @@ const Sidebar = () => {
               onClose={handleCloseUserInfo}
               PaperProps={{
                 style: {
-                  width: 300
+                  width: 260
                 }
               }}
             >
               <Card elevation={0} className={classes.card}>
                 <CardContent style={{ padding: 8 }}>
-                  <Grid container>
-                    <Grid item xs={3} sm={3} md={3} xl={3}>
-                      <Box textAlign="center">
-                        <AssignmentInd className={classes.btnUserInfoCard}/>
-                      </Box>
-                    </Grid>
-                    <Grid item xs={9} sm={9} md={9} xl={9}>
-                      <Box>
+                  <Box display="flex" flexDirection="row" alignItems="center" justifyContent="start">
+                    <Box>
+                      <AssignmentInd className={classes.btnUserInfoCard}/>
+                    </Box>
+                    <Box marginLeft={1}>
+                      <Box display="flex" flexDirection="row" alignItems="center" justifyContent="center">
                         { state.user && state.user.nombres ? `${state.user.nombres} ${state.user.primer_apellido} ${state.user.segundo_apellido}` : 'USUARIO LOGUEADO S/N' }
                       </Box>
-                      <Box>{ state.user ? state.user.email : ''}</Box>
-                    </Grid>
-                  </Grid>
+                      <Box>{ state.user && state.user.email ? state.user.email : 'email@test.com'}</Box>
+                    </Box>
+                  </Box>
                 </CardContent>
               </Card>
               <Divider/>

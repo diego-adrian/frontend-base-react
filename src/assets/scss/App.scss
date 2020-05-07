@@ -37,7 +37,7 @@ html, body {
   .user--information {
     padding: 0;
     margin: 0;
-    height: 250px;
+    height: 220px;
     background: url('../images/geometric.png') lighten($color: $info, $amount: 45) no-repeat;
     background-color: lighten($color: $primary, $amount: 78);
     display: flex;

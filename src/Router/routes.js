@@ -1,15 +1,10 @@
-import { DashboardPage, Login, User } from './components';
+import { Login, Usuarios } from './components';
 
 const routes = [
   {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: DashboardPage
-  },
-  {
-    path: '/user',
-    name: 'User',
-    component: User
+    path: '/usuarios',
+    name: 'usuarios',
+    component: Usuarios
   },
   {
     path: '/login',

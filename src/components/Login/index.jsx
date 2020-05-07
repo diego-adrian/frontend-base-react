@@ -4,7 +4,7 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 import clsx from 'clsx';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setLogin } from '../../redux/userDuck';
 import { setStatusSidenav } from '../../redux/layoutDuck';
 import Footer from '../../layout/Footer';
@@ -83,8 +83,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Login = ({ setLogin, setStatusSidenav, MessageError, MessageWarning, MessageSuccess }) => {
+const Login = () => {
   console.log('LOGIN');
+  const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
   const [formState, setFormState] = useState({
@@ -147,10 +148,10 @@ const Login = ({ setLogin, setStatusSidenav, MessageError, MessageWarning, Messa
           Storage.set('token', response.datos.token);
           Storage.set('menu', response.datos.menu);
           Storage.set('sidenav', true);
-          history.push('/dashboard');
-          MessageSuccess('Acceso exitosamente correcto');
-          setLogin(true);
-          setStatusSidenav(true);
+          history.push('/usuarios');
+          dispatch(MessageSuccess('Acceso exitosamente correcto'));
+          dispatch(setLogin(true));
+          dispatch(setStatusSidenav(true));
         } else {
           throw new Error(response.mensaje);
         }
@@ -166,10 +167,10 @@ const Login = ({ setLogin, setStatusSidenav, MessageError, MessageWarning, Messa
             password: true
           }
         }));
-        MessageWarning('Faltan campos por llenar');
+        dispatch(MessageWarning('Faltan campos por llenar'));
       }
     } catch (error) {
-      MessageError(error.message);
+      dispatch(MessageError(error.message));
     }
   };
   const handleChangeView = () => {
@@ -291,4 +292,4 @@ const Login = ({ setLogin, setStatusSidenav, MessageError, MessageWarning, Messa
   );
 };
 
-export default connect(null, { setStatusSidenav, setLogin, MessageError, MessageWarning, MessageSuccess })(Login);
+export default Login;
