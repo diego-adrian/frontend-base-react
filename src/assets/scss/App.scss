@@ -39,14 +39,15 @@ html, body {
     margin: 0;
     height: 250px;
     background: url('../images/geometric.png') lighten($color: $info, $amount: 45) no-repeat;
+    background-color: lighten($color: $primary, $amount: 78);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     .user--information_logo {
-      border: 3px solid #fff;
+      border: 3px solid $white;
       border-radius: 50%;
-      color: #fff;
+      color: $white;
       font-size: 3.4rem;
       height: 100px;
       line-height: 90px;

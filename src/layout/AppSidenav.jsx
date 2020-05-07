@@ -145,6 +145,12 @@ const Sidebar = () => {
   };
 
   const handleCloseUserInfo = () => {
+    setState((state) => ({
+      ...state,
+      popupUserInfo: null
+    }));
+  };
+  const logout = () => {
     Storage.remove('menu');
     Storage.remove('token');
     Storage.remove('user');
@@ -218,7 +224,7 @@ const Sidebar = () => {
                 </CardContent>
               </Card>
               <Divider/>
-              <MenuItem className={clsx(classes.logout)} onClick={handleCloseUserInfo}>
+              <MenuItem className={clsx(classes.logout)} onClick={logout}>
                 <Box mr={1} pt={1}><FolderShared/></Box>
                 <Box>Cerrar Sesion</Box>
               </MenuItem>
