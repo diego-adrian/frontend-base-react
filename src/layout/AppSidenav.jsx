@@ -19,7 +19,7 @@ import {
   Box,
   Card
 } from '@material-ui/core';
-import { AssignmentInd, FolderShared, Apartment } from '@material-ui/icons';
+import { AssignmentInd, FolderShared, Folder, FolderOpen } from '@material-ui/icons';
 import { setLogin } from '../redux/userDuck';
 import { setStatusSidenav } from '../redux/layoutDuck';
 import Storage from '../plugins/Storage';
@@ -83,7 +83,7 @@ const Sidebar = () => {
     selectItem: {
       backgroundColor: theme.palette.info.main,
       '& svg': {
-        color: theme.palette.primary.dark,
+        color: '#FFF',
         opacity: 1
       }
     },
@@ -132,8 +132,8 @@ const Sidebar = () => {
       fontWeight: 400
     },
     icon: {
-      color: theme.palette.info.light,
-      opacity: .3
+      color: theme.palette.warning.light,
+      opacity: 1
     }
   }));
 
@@ -259,7 +259,7 @@ const Sidebar = () => {
                 onClick={() => setItemSelected(index)}
               >
                 <ListItemIcon style={{ minWidth: 35 }}>
-                  <Icon className={clsx(classes.icon)} component={Apartment}/>
+                  <Icon className={clsx(classes.icon)} component={itemSelected === index ? FolderOpen : Folder}/>
                 </ListItemIcon>
                 <ListItemText primary={item.label} />
               </ListItem>

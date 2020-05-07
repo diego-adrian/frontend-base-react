@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import clsx from 'clsx';
 import { HashRouter as Router, Switch, Route, useHistory } from 'react-router-dom';
-import { Box } from '@material-ui/core';
+import { Box, Fade } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import AppNavbar from '../layout/AppNavbar';
@@ -74,9 +74,11 @@ const AppRouter = () => {
         [classes.compressMode]: !appSidenavStatus
       })}
       >
-        <Switch>
-          <Location/>
-        </Switch>
+        <Fade>
+          <Switch>
+            <Location/>
+          </Switch>
+        </Fade>
       </Box>
     </Router>
   );
