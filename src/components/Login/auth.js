@@ -6,7 +6,7 @@ const Auth = {
     try {
       const request = {
         method: 'GET',
-        url: `${url}api/public/codigo`,
+        url: `${url}public/codigo`,
         responseType: 'json'
       };
       const response = await axios(request);

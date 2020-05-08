@@ -59,6 +59,9 @@ const AppRouter = () => {
       marginLeft: loggedIn ? widthSidenavClose : 0,
       marginTop: Storage.get('token') ? 50 : 0,
       padding: Storage.get('token') ? 10 : 0
+    },
+    main: {
+      height: 'calc(100vh - 50px)'
     }
   }));
 
@@ -72,7 +75,7 @@ const AppRouter = () => {
       <Box className={clsx(classes.root, {
         [classes.normalMode]: appSidenavStatus,
         [classes.compressMode]: !appSidenavStatus
-      })}
+      }, classes.main)}
       >
         <Fade>
           <Switch>
