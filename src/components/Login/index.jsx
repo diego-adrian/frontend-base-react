@@ -137,7 +137,7 @@ const Login = () => {
     try {
       event.preventDefault();
       if ((formState.values.user || '').length > 0 && (formState.values.password || '').length > 0) {
-        const response = await Service.post('api/public/login', {
+        const response = await Service.post('public/login', {
           usuario: formState.values.user,
           password: formState.values.password
         });
@@ -148,10 +148,12 @@ const Login = () => {
           Storage.set('token', response.datos.token);
           Storage.set('menu', response.datos.menu);
           Storage.set('sidenav', true);
-          history.push('/usuarios');
           dispatch(MessageSuccess('Acceso exitosamente correcto'));
           dispatch(setLogin(true));
           dispatch(setStatusSidenav(true));
+          if (history.location.pathname !== '/usuarios') {
+            history.push('/usuarios');
+          }
         } else {
           throw new Error(response.mensaje);
         }

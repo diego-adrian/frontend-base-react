@@ -15,6 +15,18 @@ const Storage = {
       return data;
     }
   },
+  /**
+   * @author dbarra.agetic.gob.bo
+   * @function clean
+   * @description Esta funcion esta encargada de limpiar variables del storage
+   */
+  clean () {
+    this.remove('token');
+    this.remove('user');
+    this.remove('menu');
+    this.remove('sidenav');
+    this.remove('roles');
+  },
   remove (key) {
     window.localStorage.removeItem(`${APP_NAME}_${key}`);
   },

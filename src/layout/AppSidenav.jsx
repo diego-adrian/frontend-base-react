@@ -24,7 +24,7 @@ import { setStatusSidenav } from '../redux/layoutDuck';
 import Storage from '../plugins/Storage';
 
 const Sidebar = () => {
-  const Routes = Storage.get('menu');
+  const Routes = Storage.get('menu') || [];
   const dispatch = useDispatch();
   const history = useHistory();
   const { loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatus } = useSelector(state => ({
@@ -150,17 +150,16 @@ const Sidebar = () => {
     }));
   };
   const logout = () => {
-    Storage.remove('menu');
-    Storage.remove('token');
-    Storage.remove('user');
-    Storage.remove('sidenav');
+    Storage.clean();
     dispatch(setLogin(false));
     dispatch(setStatusSidenav(false));
     setState((state) => ({
       ...state,
       popupUserInfo: null
     }));
-    history.push('/login');
+    if (history.location.pathname !== '/login') {
+      history.push('/login');
+    }
   };
 
   const classes = useStyles();

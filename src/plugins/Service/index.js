@@ -1,10 +1,10 @@
 
 import axios from 'axios';
-// import { useHistory } from 'react-router-dom';
-import Util from '../Util';
+import Util from '../utils';
 import Storage from '../Storage';
-// const router = useHistory();
-const router = [];
+import store from '../../redux/store';
+import { MessageError, MessageInfo } from '../../redux/pluginsDuck';
+import router from '../history';
 
 const authToken = process.env.REACT_APP_AUTH_TOKEN || 'Bearer';
 const baseServer = process.env.REACT_APP_BASE_SERVER || '';
@@ -17,11 +17,13 @@ axios.interceptors.request.use(config => config, error => Promise.reject(error))
 axios.interceptors.response.use(response => response, (error) => {
   if (error.response) {
     if (error.response.status === 400) {
-      console.error(error.response.data.mensaje);
+      store.dispatch(MessageError(error.response.data.mensaje));
     }
     if (error.response.status === 401) {
-      if (window.location.hash !== '#/login') {
-        console.error('Su sesión ha terminado.');
+      if (router.location.pathname !== '/login') {
+        store.dispatch(MessageError('Su sesión ha terminado.'));
+        Storage.clean();
+        router.push('/login');
       }
     }
     if (error.response.status === 500) {
@@ -38,7 +40,7 @@ axios.interceptors.response.use(response => response, (error) => {
           message = text.join('<br />');
         }
       }
-      console.info(message);
+      store.dispatch(MessageInfo(message));
       router.push('/500');
     }
   }
@@ -55,12 +57,12 @@ const handlingErrors = error => {
     data = error.response.data;
   } else if (error.message) {
     if (error.message === 'Network Error') {
-      console.error('Network Error');
+      store.dispatch(MessageError('Network Error'));
     } else {
-      console.error(error.message);
+      store.dispatch(MessageError(error.message));
     }
   } else {
-    console.error('Network Error');
+    store.dispatch(MessageError('Network Error'));
   }
   return data;
 };

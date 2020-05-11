@@ -33,7 +33,9 @@ const AppRouter = () => {
     } else {
       dispatch(setLogin(false));
       dispatch(setStatusSidenav(false));
-      history.push('/login');
+      if (history.location.pathname !== '/login') {
+        history.push('/login');
+      }
     }
   }, [dispatch, history]);
 
@@ -69,8 +71,8 @@ const AppRouter = () => {
 
   return (
     <Router>
-      <AppNavbar/>
-      <AppSidenav/>
+      { loggedIn ? <AppNavbar/> : null }
+      { loggedIn ? <AppSidenav/> : null }
       <Message/>
       <Box className={clsx(classes.root, {
         [classes.normalMode]: appSidenavStatus,

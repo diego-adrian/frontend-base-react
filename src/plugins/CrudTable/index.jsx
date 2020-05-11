@@ -75,7 +75,9 @@ const CrudTable = ({ url, headers }) => {
   useEffect(() => {
     const getData = async () => {
       const response = await Service.get(url);
-      console.table(response);
+      if (response && response.finalizado) {
+        console.log(response);
+      }
     };
     getData();
   }, [url]);

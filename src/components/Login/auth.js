@@ -1,4 +1,9 @@
 import axios from 'axios';
+import Storage from '../../plugins/Storage';
+import history from '../../plugins/history';
+import store from '../../redux/store';
+import { setLogin } from '../../redux/userDuck';
+import { setStatusSidenav } from '../../redux/layoutDuck';
 
 const Auth = {
   getCode: async () => {
@@ -13,6 +18,14 @@ const Auth = {
       window.location.href = new URL(response.data.url);
     } catch (error) {
       console.error(error.message);
+    }
+  },
+  logout: () => {
+    Storage.clean();
+    store.dispatch(setLogin(false));
+    store.dispatch(setStatusSidenav(false));
+    if (history.location.pathname !== '/login') {
+      history.push('/login');
     }
   }
 };

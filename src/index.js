@@ -9,7 +9,7 @@ import 'typeface-roboto';
 
 
 ReactDOM.render(
-  <Provider store={store()}>
+  <Provider store={store}>
     <App />
   </Provider>,
   document.getElementById('root')
