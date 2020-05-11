@@ -71,8 +71,8 @@ const AppRouter = () => {
 
   return (
     <Router>
-      { loggedIn ? <AppNavbar/> : null }
-      { loggedIn ? <AppSidenav/> : null }
+      <AppNavbar/>
+      <AppSidenav/>
       <Message/>
       <Box className={clsx(classes.root, {
         [classes.normalMode]: appSidenavStatus,
