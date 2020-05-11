@@ -4,6 +4,8 @@ import Util from '../utils';
 import Storage from '../Storage';
 import store from '../../redux/store';
 import { MessageError, MessageInfo } from '../../redux/pluginsDuck';
+import { setLogin } from '../../redux/userDuck';
+import { setStatusSidenav } from '../../redux/layoutDuck';
 import router from '../history';
 
 const authToken = process.env.REACT_APP_AUTH_TOKEN || 'Bearer';
@@ -21,6 +23,8 @@ axios.interceptors.response.use(response => response, (error) => {
     }
     if (error.response.status === 401) {
       if (router.location.pathname !== '/login') {
+        store.dispatch(setLogin(false));
+        store.dispatch(setStatusSidenav(false));
         store.dispatch(MessageError('Su sesión ha terminado.'));
         Storage.clean();
         router.push('/login');
