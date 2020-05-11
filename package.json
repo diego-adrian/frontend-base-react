@@ -32,6 +32,7 @@
       "airbnb"
     ],
     "rules": {
+      "react-hooks/exhaustive-deps": "off",
       "eslint-disable-next-line": "off",
       "comma-dangle": "off",
       "react/prop-types": "off",
@@ -51,6 +52,8 @@
       "no-restricted-syntax": "off",
       "guard-for-in": "off",
       "arrow-parens": "off",
+      "radix": "off",
+      "no-restricted-globals": "off",
       "no-async-promise-executor": "off",
       "consistent-return": "off",
       "no-param-reassign": "off"

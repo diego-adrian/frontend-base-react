@@ -1,9 +1,11 @@
 import { createMuiTheme } from '@material-ui/core/styles';
+import { esES } from '@material-ui/core/locale';
 import { sansation, titilliumWebLight, titilliumWebRegular, titilliumWebBold } from './fonts';
 
 const theme = createMuiTheme({
   typography: {
-    fontFamily: ['Titillium Web'].join(',')
+    fontFamily: ['Titillium Web'].join(','),
+    fontSize: 12.5
   },
   overrides: {
     MuiCssBaseline: {
@@ -43,6 +45,6 @@ const theme = createMuiTheme({
       dark: '#388e3c'
     }
   }
-});
+}, esES);
 
 export default theme;

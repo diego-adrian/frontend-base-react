@@ -1,3 +1,4 @@
+/* eslint-disable */
 const Util = {
   toType (obj) {
     return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
@@ -5,6 +6,14 @@ const Util = {
 
   stripHTML (texto) {
     return texto.replace(/(<([^>]+)>)/ig, '');
+  },
+
+  replace (text, find, replace) {
+    for (let i = 0, l = find.length, regex; i < l; i++) {
+      regex = new RegExp(find[i], 'g');
+      text = text.replace(regex, replace[i]);
+    }
+    return text;
   },
 
   fullscreen () {
