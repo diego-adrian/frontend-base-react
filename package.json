@@ -52,6 +52,7 @@
       "no-restricted-syntax": "off",
       "guard-for-in": "off",
       "arrow-parens": "off",
+      "no-nested-ternary": "off",
       "radix": "off",
       "no-restricted-globals": "off",
       "no-async-promise-executor": "off",

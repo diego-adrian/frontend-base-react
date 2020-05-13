@@ -30,6 +30,10 @@ const AppRouter = () => {
     if (token) {
       dispatch(setLogin(true));
       dispatch(setStatusSidenav(true));
+      const menu = Storage.get('menu');
+      if (!history.location.pathname.includes(menu[0].url)) {
+        history.push(menu[0].url);
+      }
     } else {
       dispatch(setLogin(false));
       dispatch(setStatusSidenav(false));
@@ -37,7 +41,7 @@ const AppRouter = () => {
         history.push('/login');
       }
     }
-  }, [dispatch, history]);
+  }, [history]);
 
   const useStyles = makeStyles((theme) => ({
     root: {
