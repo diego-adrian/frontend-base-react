@@ -5,7 +5,8 @@ import { sansation, titilliumWebLight, titilliumWebRegular, titilliumWebBold } f
 const theme = createMuiTheme({
   typography: {
     fontFamily: ['Titillium Web'].join(','),
-    fontSize: 12.5
+    fontSize: 12.5,
+    fontWeight: 300
   },
   overrides: {
     MuiCssBaseline: {

@@ -57,16 +57,19 @@ const filterResponse = response => response;
 
 const handlingErrors = error => {
   let data;
-  if (error.response) {
-    data = error.response.data;
-  } else if (error.message) {
-    if (error.message === 'Network Error') {
-      store.dispatch(MessageError('Network Error'));
-    } else {
-      store.dispatch(MessageError(error.message));
-    }
+  if (error.message === 'Network Error') {
+    data = {
+      mensaje: 'Network Error'
+    };
+  } else if (error.response && error.response.status === 404) {
+    data = {
+      ...error.response,
+      mensaje: 'No existe la ruta que desea consumir'
+    };
   } else {
-    store.dispatch(MessageError('Network Error'));
+    data = {
+      ...error.response.data
+    };
   }
   return data;
 };

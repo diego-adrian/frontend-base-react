@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useReducer, useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CrudTable = ({ url, headers, buttons, render }) => {
-  console.log('CRUD-TAaaBLE');
+  console.log('COMPONENT CRUD-TAaaBLE');
   const SET_DATA = 'SET_DATA';
   const SET_PAGE = 'SET_PAGE';
   const SET_ITEMS_PER_PAGE = 'SET_ITEMS_PER_PAGE';
@@ -170,4 +170,4 @@ CrudTable.propTypes = {
   headers: PropTypes.arrayOf(PropTypes.shape({ label: PropTypes.string })).isRequired
 };
 
-export default CrudTable;
+export default memo(CrudTable);

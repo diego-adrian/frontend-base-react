@@ -1,5 +1,5 @@
 import React, { useState, Fragment } from 'react';
-import { Add, Edit, Delete } from '@material-ui/icons';
+import { Add, Edit, Delete, GroupAddOutlined } from '@material-ui/icons';
 import {
   Button,
   TableRow,
@@ -12,8 +12,13 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle
+  DialogTitle,
+  TextField,
+  Grid
 } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
+import { MessageError, MessageSuccess } from '../../redux/pluginsDuck';
+import Service from '../../plugins/Service';
 import Datetime from '../../plugins/datetime';
 import CrudTable from '../../plugins/CrudTable';
 
@@ -31,13 +36,16 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     width: '600px'
+  },
+  borderBottom: {
+    borderBottom: '1px solid rgba(0, 0, 0, .12)',
   }
 }));
 
 const DialogCustomized = withStyles(() => ({
   root: {
     '& .MuiDialog-paper': {
-      width: 550
+      width: 420
     }
   }
 }))(Dialog);
@@ -45,7 +53,31 @@ const DialogCustomized = withStyles(() => ({
 const User = () => {
   console.log('User component');
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
+  const [state, setState] = useState({
+    errors: {
+      user: true,
+      nombres: true,
+      apellidoPaterno: true,
+      apellidoMaterno: false,
+      email: true
+    },
+    values: {
+      user: null,
+      nombres: null,
+      apellidoPaterno: null,
+      apellidoMaterno: null,
+      email: null
+    },
+    touched: {
+      user: false,
+      nombres: false,
+      apellidoPaterno: false,
+      apellidoMaterno: false,
+      email: false
+    }
+  });
   const url = 'usuario';
   const headers = [{
     key: 'actions',
@@ -79,12 +111,71 @@ const User = () => {
     format: (value) => Datetime.format(value, 'dd/MM/YYYY')
   }];
 
+  const handleChange = (event) => {
+    const { target: { name, value } } = event;
+    setState(state => ({
+      ...state,
+      values: {
+        ...state.values,
+        [name]: value
+      },
+      errors: {
+        ...state.errors,
+        [name]: (value || '').length === 0
+      },
+      touched: {
+        ...state.touched,
+        [name]: true
+      }
+    }));
+  };
   const handleOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const createOrUpdate = async (event) => {
+    event.preventDefault();
+    try {
+      if (Object.values(state.errors).includes(true)) {
+        dispatch(MessageError('Faltan campos por llenar'));
+        setState(state => ({
+          ...state,
+          errors: {
+            user: (state.values.user || '').length === 0,
+            nombres: (state.values.nombres || '').length === 0,
+            apellidoPaterno: (state.values.apellidoPaterno || '').length === 0,
+            email: (state.values.email || '').length === 0
+          },
+          touched: {
+            user: true,
+            nombres: true,
+            apellidoPaterno: true,
+            email: true
+          }
+        }));
+      } else {
+        const data = {
+          user: state.values.user,
+          nombres: state.values.nombres,
+          apellidoPaterno: state.values.apellidoPaterno,
+          apellidoMaterno: state.values.apellidoMaterno,
+          email: state.values.email
+        };
+        const userCreated = await Service.post('usuario', data);
+        console.log(userCreated);
+        if (userCreated && userCreated.finalizado) {
+          dispatch(MessageSuccess('Usuario exitosamente guardado'));
+        } else {
+          throw new Error(userCreated.mensaje);
+        }
+      }
+    } catch (error) {
+      dispatch(MessageError(error.message));
+    }
   };
 
   const deleteItem = (rows) => {
@@ -152,13 +243,90 @@ const User = () => {
         open={open}
         onClose={handleClose}
       >
-        <DialogTitle>Agregar</DialogTitle>
-        <DialogContent>
-          Contenido
-        </DialogContent>
-        <DialogActions>
-          <Button variant="contained" color="primary" onClick={handleClose}>Enviar</Button>
-        </DialogActions>
+        <form noValidate onSubmit={createOrUpdate}>
+          <DialogTitle className={classes.borderBottom}>
+            <Box display="flex" flexDirection="row" alignItems="center" justifyItems="start">
+              <GroupAddOutlined color="primary" />
+              <Box ml={1} fontSize={15}>
+                Agregar un nuevo usuario
+              </Box>
+            </Box>
+          </DialogTitle>
+          <DialogContent>
+            <Box>
+              <Grid container spacing={1}>
+                <Grid item md={6} xs={12} sm={6} lg={6} xl={6}>
+                  <TextField
+                    error={state.errors.user && state.touched.user}
+                    name="user"
+                    onChange={handleChange}
+                    helperText={state.errors.user && state.touched.user ? 'El campo no puede estar vacio' : ''}
+                    fullWidth
+                    margin="dense"
+                    autoFocus
+                    variant="standard"
+                    label="Usuario"
+                    color="primary"
+                  />
+                </Grid>
+                <Grid item md={6} xs={12} sm={6} lg={6} xl={6}>
+                  <TextField
+                    error={state.errors.nombres && state.touched.nombres}
+                    name="nombres"
+                    onChange={handleChange}
+                    helperText={state.errors.nombres && state.touched.nombres ? 'El campo no puede estar vacio' : ''}
+                    fullWidth
+                    margin="dense"
+                    variant="standard"
+                    label="Nombres"
+                    color="primary"
+                  />
+                </Grid>
+                <Grid item md={6} xs={12} sm={6} lg={6} xl={6}>
+                  <TextField
+                    error={state.errors.apellidoPaterno && state.touched.apellidoPaterno}
+                    name="apellidoPaterno"
+                    onChange={handleChange}
+                    helperText={state.errors.apellidoPaterno && state.touched.apellidoPaterno ? 'El campo no puede estar vacio' : ''}
+                    fullWidth
+                    margin="dense"
+                    variant="standard"
+                    label="Apellido Paterno"
+                    color="primary"
+                  />
+                </Grid>
+                <Grid item md={6} xs={12} sm={6} lg={6} xl={6}>
+                  <TextField
+                    name="apellidoMaterno"
+                    onChange={handleChange}
+                    fullWidth
+                    margin="dense"
+                    variant="standard"
+                    label="Apellido Materno"
+                    color="primary"
+                  />
+                </Grid>
+                <Grid item md={12} xs={12} sm={12} lg={12} xl={12}>
+                  <TextField
+                    error={state.errors.email && state.touched.email}
+                    name="email"
+                    onChange={handleChange}
+                    helperText={state.errors.email && state.touched.email ? 'El campo no puede estar vacio' : ''}
+                    fullWidth
+                    margin="dense"
+                    variant="standard"
+                    label="Correo electrónico"
+                    color="primary"
+                  />
+                </Grid>
+              </Grid>
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            <Button variant="contained" color="default" disableElevation onClick={handleClose}>Cancelar</Button>
+            <Button variant="contained" color="primary" type="submit">Crear Usuario</Button>
+          </DialogActions>
+        </form>
       </DialogCustomized>
     </Fragment>
   );
