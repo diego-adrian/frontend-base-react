@@ -54,6 +54,7 @@
       "arrow-parens": "off",
       "no-nested-ternary": "off",
       "radix": "off",
+      "import/prefer-default-export": "off",
       "no-restricted-globals": "off",
       "no-async-promise-executor": "off",
       "consistent-return": "off",

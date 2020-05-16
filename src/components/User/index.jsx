@@ -21,6 +21,7 @@ import { MessageError, MessageSuccess } from '../../redux/pluginsDuck';
 import Service from '../../plugins/Service';
 import Datetime from '../../plugins/datetime';
 import CrudTable from '../../plugins/CrudTable';
+import { useForm } from '../../plugins/Hooks';
 
 const useStyles = makeStyles((theme) => ({
   paddingButton: {
@@ -54,30 +55,15 @@ const User = () => {
   console.log('User component');
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [open, setOpen] = useState(false);
-  const [state, setState] = useState({
-    errors: {
-      user: true,
-      nombres: true,
-      apellidoPaterno: true,
-      apellidoMaterno: false,
-      email: true
-    },
-    values: {
-      user: null,
-      nombres: null,
-      apellidoPaterno: null,
-      apellidoMaterno: null,
-      email: null
-    },
-    touched: {
-      user: false,
-      nombres: false,
-      apellidoPaterno: false,
-      apellidoMaterno: false,
-      email: false
-    }
+  const form = useForm({
+    user: null,
+    nombres: null,
+    apellidoPaterno: null,
+    apellidoMaterno: null,
+    email: null
   });
+  const [open, setOpen] = useState(false);
+  const [action, setAction] = useState('add');
   const url = 'usuario';
   const headers = [{
     key: 'actions',
@@ -111,25 +97,8 @@ const User = () => {
     format: (value) => Datetime.format(value, 'dd/MM/YYYY')
   }];
 
-  const handleChange = (event) => {
-    const { target: { name, value } } = event;
-    setState(state => ({
-      ...state,
-      values: {
-        ...state.values,
-        [name]: value
-      },
-      errors: {
-        ...state.errors,
-        [name]: (value || '').length === 0
-      },
-      touched: {
-        ...state.touched,
-        [name]: true
-      }
-    }));
-  };
-  const handleOpen = () => {
+  const handleOpen = (option) => {
+    setAction(option);
     setOpen(true);
   };
 
@@ -137,38 +106,30 @@ const User = () => {
     setOpen(false);
   };
 
+  const addUser = () => {
+    form.reset();
+    handleOpen('add');
+  };
+
   const createOrUpdate = async (event) => {
     event.preventDefault();
     try {
-      if (Object.values(state.errors).includes(true)) {
+      if (Object.values(form.errors).includes(true)) {
         dispatch(MessageError('Faltan campos por llenar'));
-        setState(state => ({
-          ...state,
-          errors: {
-            user: (state.values.user || '').length === 0,
-            nombres: (state.values.nombres || '').length === 0,
-            apellidoPaterno: (state.values.apellidoPaterno || '').length === 0,
-            email: (state.values.email || '').length === 0
-          },
-          touched: {
-            user: true,
-            nombres: true,
-            apellidoPaterno: true,
-            email: true
-          }
-        }));
+        form.setTouched();
       } else {
         const data = {
-          user: state.values.user,
-          nombres: state.values.nombres,
-          apellidoPaterno: state.values.apellidoPaterno,
-          apellidoMaterno: state.values.apellidoMaterno,
-          email: state.values.email
+          user: form.values.user,
+          nombres: form.values.nombres,
+          apellidoPaterno: form.values.apellidoPaterno,
+          apellidoMaterno: form.values.apellidoMaterno,
+          email: form.values.email
         };
         const userCreated = await Service.post('usuario', data);
         console.log(userCreated);
         if (userCreated && userCreated.finalizado) {
           dispatch(MessageSuccess('Usuario exitosamente guardado'));
+          handleClose();
         } else {
           throw new Error(userCreated.mensaje);
         }
@@ -185,21 +146,28 @@ const User = () => {
   const editItem = (rows) => {
     console.log('Edit rows');
     console.log(rows);
-    handleOpen();
+    const data = {
+      user: rows.usuario,
+      nombres: rows.persona.nombres,
+      apellidoPaterno: rows.persona.primerApellido,
+      apellidoMaterno: rows.persona.segundoApellido,
+      email: rows.correoElectronico
+    };
+    form.reset();
+    form.setValues(data);
+    handleOpen('edit');
   };
 
-  const Buttons = () => {
-    console.log('66666');
-    return (
-      <Button
-        variant="contained"
-        color="secondary"
-        startIcon={<Add />}
-      >
-        Agregar
-      </Button>
-    );
-  };
+  const Buttons = () => (
+    <Button
+      variant="contained"
+      color="secondary"
+      onClick={addUser}
+      startIcon={<Add />}
+    >
+      Agregar
+    </Button>
+  );
 
   return (
     <Fragment>
@@ -248,7 +216,8 @@ const User = () => {
             <Box display="flex" flexDirection="row" alignItems="center" justifyItems="start">
               <GroupAddOutlined color="primary" />
               <Box ml={1} fontSize={15}>
-                Agregar un nuevo usuario
+                { action === 'add' ? 'Agregar ' : 'Editar ' }
+                usuario
               </Box>
             </Box>
           </DialogTitle>
@@ -257,10 +226,11 @@ const User = () => {
               <Grid container spacing={1}>
                 <Grid item md={6} xs={12} sm={6} lg={6} xl={6}>
                   <TextField
-                    error={state.errors.user && state.touched.user}
+                    error={form.errors.user && form.touched.user}
                     name="user"
-                    onChange={handleChange}
-                    helperText={state.errors.user && state.touched.user ? 'El campo no puede estar vacio' : ''}
+                    value={form.values.user}
+                    onChange={form.addValue}
+                    helperText={form.errors.user && form.touched.user ? 'El campo no puede estar vacio' : ''}
                     fullWidth
                     margin="dense"
                     autoFocus
@@ -271,10 +241,11 @@ const User = () => {
                 </Grid>
                 <Grid item md={6} xs={12} sm={6} lg={6} xl={6}>
                   <TextField
-                    error={state.errors.nombres && state.touched.nombres}
+                    error={form.errors.nombres && form.touched.nombres}
                     name="nombres"
-                    onChange={handleChange}
-                    helperText={state.errors.nombres && state.touched.nombres ? 'El campo no puede estar vacio' : ''}
+                    value={form.values.nombres}
+                    onChange={form.addValue}
+                    helperText={form.errors.nombres && form.touched.nombres ? 'El campo no puede estar vacio' : ''}
                     fullWidth
                     margin="dense"
                     variant="standard"
@@ -284,10 +255,11 @@ const User = () => {
                 </Grid>
                 <Grid item md={6} xs={12} sm={6} lg={6} xl={6}>
                   <TextField
-                    error={state.errors.apellidoPaterno && state.touched.apellidoPaterno}
+                    error={form.errors.apellidoPaterno && form.touched.apellidoPaterno}
                     name="apellidoPaterno"
-                    onChange={handleChange}
-                    helperText={state.errors.apellidoPaterno && state.touched.apellidoPaterno ? 'El campo no puede estar vacio' : ''}
+                    value={form.values.apellidoPaterno}
+                    onChange={form.addValue}
+                    helperText={form.errors.apellidoPaterno && form.touched.apellidoPaterno ? 'El campo no puede estar vacio' : ''}
                     fullWidth
                     margin="dense"
                     variant="standard"
@@ -298,7 +270,8 @@ const User = () => {
                 <Grid item md={6} xs={12} sm={6} lg={6} xl={6}>
                   <TextField
                     name="apellidoMaterno"
-                    onChange={handleChange}
+                    onChange={form.addValue}
+                    value={form.values.apellidoMaterno}
                     fullWidth
                     margin="dense"
                     variant="standard"
@@ -308,10 +281,11 @@ const User = () => {
                 </Grid>
                 <Grid item md={12} xs={12} sm={12} lg={12} xl={12}>
                   <TextField
-                    error={state.errors.email && state.touched.email}
+                    error={form.errors.email && form.touched.email}
                     name="email"
-                    onChange={handleChange}
-                    helperText={state.errors.email && state.touched.email ? 'El campo no puede estar vacio' : ''}
+                    value={form.values.email}
+                    onChange={form.addValue}
+                    helperText={form.errors.email && form.touched.email ? 'El campo no puede estar vacio' : ''}
                     fullWidth
                     margin="dense"
                     variant="standard"
@@ -324,7 +298,10 @@ const User = () => {
           </DialogContent>
           <DialogActions>
             <Button variant="contained" color="default" disableElevation onClick={handleClose}>Cancelar</Button>
-            <Button variant="contained" color="primary" type="submit">Crear Usuario</Button>
+            <Button variant="contained" color="primary" type="submit">
+              { action === 'add' ? 'Crear ' : 'Actualizar ' }
+              Usuario
+            </Button>
           </DialogActions>
         </form>
       </DialogCustomized>
