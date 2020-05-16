@@ -3,7 +3,7 @@ import { useState } from 'react';
 export const useForm = keys => {
   const [form, setForm] = useState({
     values: Object.keys(keys).reduce((container, key) => {
-      container[key] = null;
+      container[key] = '';
       return container;
     }, {}),
     errors: Object.keys(keys).reduce((container, key) => {
@@ -22,7 +22,7 @@ export const useForm = keys => {
     reset: () => {
       setForm({
         values: Object.keys(keys).reduce((container, key) => {
-          container[key] = null;
+          container[key] = '';
           return container;
         }, {}),
         errors: Object.keys(keys).reduce((container, key) => {

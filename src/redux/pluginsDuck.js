@@ -1,5 +1,14 @@
 // Initial State
 const initialState = {
+  Confirm: {
+    show: false,
+    text: null,
+    width: null,
+    textOk: null,
+    textCancel: null,
+    callbackOk: () => {},
+    callbackCancel: () => {}
+  },
   Message: {
     show: false,
     message: null,
@@ -13,6 +22,9 @@ const OPEN_MESSAGE_INFO = 'OPEN_MESSAGE_INFO';
 const OPEN_MESSAGE_WARNING = 'OPEN_MESSAGE_WARNING';
 const OPEN_MESSAGE_ERROR = 'OPEN_MESSAGE_ERROR';
 const CLOSE_MESSAGE = 'CLOSE_MESSAGE';
+
+const OPEN_CONFIRM = 'OPEN_CONFIRM';
+const CLOSE_CONFIRM = 'CLOSE_CONFIRM';
 // Reducer
 
 export const reducerPlugins = (state = initialState, action) => {
@@ -65,12 +77,52 @@ export const reducerPlugins = (state = initialState, action) => {
           theme: action.payload.theme
         }
       };
+    case OPEN_CONFIRM: {
+      return {
+        ...state,
+        Confirm: {
+          ...state.Confirm,
+          show: true,
+          text: action.payload.text,
+          width: action.payload.width,
+          textOk: action.payload.textOk,
+          textCancel: action.payload.textCancel,
+          callbackOk: action.payload.callbackOk,
+          callbackCancel: action.payload.callbackCancel
+        }
+      };
+    }
+    case CLOSE_CONFIRM: {
+      return {
+        ...state,
+        Confirm: {
+          ...state.Confirm,
+          show: false
+        }
+      };
+    }
     default:
       return state;
   }
 };
 
 // Actions
+export const openConfirm = (text = 'Mensaje...', callbackOk = null, callbackCancel = null, textOk = 'Aceptar', textCancel = 'Cancelar', width = 360) => ({
+  type: OPEN_CONFIRM,
+  payload: {
+    text,
+    callbackOk: typeof callbackOk === 'function' ? callbackOk : null,
+    callbackCancel: typeof callbackCancel === 'function' ? callbackCancel : null,
+    textOk,
+    textCancel,
+    width
+  }
+});
+
+export const closeConfirm = () => ({
+  type: CLOSE_CONFIRM
+});
+
 export const MessageSuccess = (message, theme = 'success') => ({
   type: OPEN_MESSAGE_SUCCESS,
   payload: {

@@ -11,8 +11,10 @@ import {
   TablePagination,
   TableSortLabel,
   TableRow,
-  Box
+  Box,
+  IconButton
 } from '@material-ui/core';
+import { RefreshOutlined, SearchOutlined } from '@material-ui/icons';
 import { useDispatch } from 'react-redux';
 import { MessageError } from '../../redux/pluginsDuck';
 import Service from '../Service';
@@ -102,6 +104,13 @@ const CrudTable = ({ url, headers, buttons, render }) => {
       }
     });
   };
+  /**
+   * @function refresh
+   * @description Esta funcion esta encargada de recargar la grilla
+   */
+  const refresh = () => {
+    console.log(8888888);
+  };
 
   const handleChangeRowsPerPage = ({ target: { value } }) => {
     distpachReducer({
@@ -124,11 +133,17 @@ const CrudTable = ({ url, headers, buttons, render }) => {
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
-              { buttons ? <TableCell colSpan={headers.length}>
+              <TableCell colSpan={headers.length}>
                 <Box display="flex" flexDirection="row" alignItems="center" justifyContent="start">
                   { buttons }
+                  <IconButton color="secondary" onClick={refresh}>
+                    <RefreshOutlined />
+                  </IconButton>
+                  <IconButton color="secondary">
+                    <SearchOutlined />
+                  </IconButton>
                 </Box>
-              </TableCell> : null }
+              </TableCell>
             </TableRow>
             <TableRow>
               {headers.map((header) => (

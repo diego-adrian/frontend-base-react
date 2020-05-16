@@ -7,6 +7,7 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import AppNavbar from '../layout/AppNavbar';
 import AppSidenav from '../layout/AppSidenav';
 import Message from '../plugins/Message';
+import Confirm from '../plugins/Modal/Confirm';
 import Storage from '../plugins/Storage';
 import Routes from './routes';
 import { setLogin } from '../redux/userDuck';
@@ -78,6 +79,7 @@ const AppRouter = () => {
       <AppNavbar/>
       <AppSidenav/>
       <Message/>
+      <Confirm/>
       <Box className={clsx(classes.root, {
         [classes.normalMode]: appSidenavStatus,
         [classes.compressMode]: !appSidenavStatus

@@ -17,7 +17,7 @@ import {
   Grid
 } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
-import { MessageError, MessageSuccess } from '../../redux/pluginsDuck';
+import { MessageError, MessageSuccess, openConfirm } from '../../redux/pluginsDuck';
 import Service from '../../plugins/Service';
 import Datetime from '../../plugins/datetime';
 import CrudTable from '../../plugins/CrudTable';
@@ -142,6 +142,9 @@ const User = () => {
   const deleteItem = (rows) => {
     console.log('Delete rows');
     console.log(rows);
+    dispatch(openConfirm('¿Esta seguro de eliminar el registro?', () => {
+      console.log(7777777);
+    }));
   };
   const editItem = (rows) => {
     console.log('Edit rows');
