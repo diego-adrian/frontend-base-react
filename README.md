@@ -33,8 +33,8 @@ Service | Plugin wrapper con funciones para el manejo de peticiones con `axios` 
 
 ## Componentes adicionales
 
-Componente | Descripción | Documentación
---- | --- | --- |
+Componente | Descripción
+--- | --- |
 CrudTable | Contenedor para crear un datatable con su CRUD
 
 ## React Router
