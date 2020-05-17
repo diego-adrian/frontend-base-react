@@ -73,6 +73,9 @@ const Dashboard = () => {
           </ListItem>
         </List>
       </Box>
+      <Box mb={1}>
+        <Alert severity="error">Para mas información, revise el archivo README.md</Alert>
+      </Box>
     </Fragment>
   );
 };

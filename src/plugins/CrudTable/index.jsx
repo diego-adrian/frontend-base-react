@@ -29,6 +29,7 @@ const CrudTable = ({ url, headers, buttons, render, filters }) => {
   const SET_FETCHING = 'SET_FETCHING';
   const SHOW_FILTERS = 'SHOW_FILTERS';
   const SET_SEARCH = 'SET_SEARCH';
+  const SET_REFRESH = 'SET_REFRESH';
   const SET_ITEMS_PER_PAGE = 'SET_ITEMS_PER_PAGE';
   const dispatch = useDispatch();
   const isOpen = useSelector(state => state.layout.isOpen);
@@ -82,6 +83,7 @@ const CrudTable = ({ url, headers, buttons, render, filters }) => {
       field: null,
       value: null
     },
+    refresh: 0,
     showFilters: false,
     fetching: false,
     rows: [],
@@ -130,6 +132,13 @@ const CrudTable = ({ url, headers, buttons, render, filters }) => {
           }
         };
       }
+      case SET_REFRESH: {
+        return {
+          ...state,
+          refresh: Math.floor(Math.random() * 99 + 1),
+          page: 0
+        };
+      }
       default:
         return state;
     }
@@ -168,7 +177,7 @@ const CrudTable = ({ url, headers, buttons, render, filters }) => {
 
   useEffect(() => {
     getData();
-  }, [state.page, state.itemsPerPage, state.search]);
+  }, [state.page, state.itemsPerPage, state.search, state.refresh]);
 
   const handleChangePage = (event, newPage) => {
     distpachReducer({
@@ -205,6 +214,9 @@ const CrudTable = ({ url, headers, buttons, render, filters }) => {
    */
   const refresh = () => {
     console.log('reload');
+    distpachReducer({
+      type: SET_REFRESH
+    });
   };
 
   const handleChangeRowsPerPage = ({ target: { value } }) => {
