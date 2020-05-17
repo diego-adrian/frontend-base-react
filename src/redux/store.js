@@ -11,6 +11,11 @@ const rootReducer = combineReducers({
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const Store = () => createStore(rootReducer, composeEnhancers(applyMiddleware()));
+let Store;
+if (process.env.NODE_ENV === 'development') {
+  Store = () => createStore(rootReducer, composeEnhancers(applyMiddleware()));
+} else {
+  Store = () => createStore(rootReducer);
+}
 
 export default Store();
