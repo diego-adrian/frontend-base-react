@@ -146,13 +146,13 @@ const Login = () => {
           Storage.set('user', response.datos.usuario);
           Storage.set('roles', response.datos.roles);
           Storage.set('token', response.datos.token);
-          Storage.set('menu', response.datos.menu);
+          Storage.set('menu', [{ url: 'dashboard', label: 'Dashboard' }].concat(response.datos.menu));
           Storage.set('sidenav', true);
           dispatch(MessageSuccess('Acceso exitosamente correcto'));
           dispatch(setLogin(true));
           dispatch(setStatusSidenav(true));
-          if (history.location.pathname !== '/usuarios') {
-            history.push('/usuarios');
+          if (history.location.pathname !== '/dashboard') {
+            history.push('/dashboard');
           }
         } else {
           throw new Error(response.mensaje);

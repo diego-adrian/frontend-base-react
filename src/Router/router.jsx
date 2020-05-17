@@ -8,6 +8,7 @@ import AppSidenav from '../layout/AppSidenav';
 import Message from '../plugins/Message';
 import Confirm from '../plugins/Modal/Confirm';
 import Alert from '../plugins/Modal/Alert';
+import Waiting from '../plugins/Modal/Waiting';
 import Storage from '../plugins/Storage';
 import Routes from './routes';
 import { setLogin } from '../redux/userDuck';
@@ -81,6 +82,7 @@ const AppRouter = ({ width }) => {
       <Message/>
       <Confirm/>
       <Alert/>
+      <Waiting/>
       <Box className={clsx(classes.root, {
         [classes.normalMode]: appSidenavStatus,
         [classes.compressMode]: !appSidenavStatus

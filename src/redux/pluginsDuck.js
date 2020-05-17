@@ -19,8 +19,13 @@ const initialState = {
     message: null,
     theme: null,
     timeout: 5000
+  },
+  Waiting: {
+    show: false,
+    text: null
   }
 };
+
 // Constants
 const OPEN_MESSAGE_SUCCESS = 'OPEN_MESSAGE_SUCCESS';
 const OPEN_MESSAGE_INFO = 'OPEN_MESSAGE_INFO';
@@ -33,6 +38,9 @@ const CLOSE_CONFIRM = 'CLOSE_CONFIRM';
 
 const OPEN_ALERT = 'OPEN_ALERT';
 const CLOSE_ALERT = 'CLOSE_ALERT';
+
+const OPEN_WAITING = 'OPEN_WAITING';
+const CLOSE_WAITING = 'CLOSE_WAITING';
 
 // Reducer
 export const reducerPlugins = (state = initialState, action) => {
@@ -129,6 +137,25 @@ export const reducerPlugins = (state = initialState, action) => {
         }
       };
     }
+    case OPEN_WAITING: {
+      return {
+        ...state,
+        Waiting: {
+          ...state.Waiting,
+          show: true,
+          text: action.payload.text
+        }
+      };
+    }
+    case CLOSE_WAITING: {
+      return {
+        ...state,
+        Waiting: {
+          ...state.Waiting,
+          show: false
+        }
+      };
+    }
     default:
       return state;
   }
@@ -161,6 +188,17 @@ export const openConfirm = (text = 'Mensaje...', callbackOk = null, callbackCanc
 
 export const closeConfirm = () => ({
   type: CLOSE_CONFIRM
+});
+
+export const openWaiting = (text = 'Espere unos segundos, por favor ...') => ({
+  type: OPEN_WAITING,
+  payload: {
+    text
+  }
+});
+
+export const closeWaiting = () => ({
+  type: CLOSE_WAITING
 });
 
 export const MessageSuccess = (message, theme = 'success') => ({

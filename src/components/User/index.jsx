@@ -95,6 +95,13 @@ const User = () => {
     sort: true,
     format: (value) => Datetime.format(value, 'dd/MM/YYYY')
   }];
+  const filters = [{
+    key: 'usuario',
+    label: 'Buscar por usuario'
+  }, {
+    key: 'correoElectronico',
+    label: 'Buscar por correo electrónico'
+  }];
 
   const handleOpen = (option) => {
     setAction(option);
@@ -175,6 +182,7 @@ const User = () => {
     <Fragment>
       <CrudTable
         buttons={<Buttons/>}
+        filters={filters}
         render={({ rows }) => (
           rows.map((row, idx) => (
             <TableRow hover role="checkbox" tabIndex={-1} key={idx}>
