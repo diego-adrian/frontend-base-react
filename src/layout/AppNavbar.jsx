@@ -1,13 +1,12 @@
 import React from 'react';
 import clsx from 'clsx';
-import { AppBar, Toolbar, IconButton, Typography } from '@material-ui/core';
+import { AppBar, Toolbar, IconButton, Typography, makeStyles, withWidth } from '@material-ui/core';
 import { Menu } from '@material-ui/icons';
-import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { setStatusSidenav } from '../redux/layoutDuck';
 import '../assets/scss/AppNabvar.scss';
 
-const AppNavbar = () => {
+const AppNavbar = ({ width }) => {
   const dispatch = useDispatch();
   const { loggedIn, widthSidenavOpen, appSidenavStatus, widthSidenavClose } = useSelector(state => ({
     loggedIn: state.user.loggedIn,
@@ -30,7 +29,7 @@ const AppNavbar = () => {
       })
     },
     appSidenavClose: {
-      width: `calc(100vw - ${widthSidenavClose}px)`,
+      width: !['xs', 'sm'].includes(width) ? `calc(100vw - ${widthSidenavClose}px)` : '100vw',
       transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen
@@ -43,7 +42,7 @@ const AppNavbar = () => {
     boliviaServicio: {
       color: 'rgba(0, 0, 0, 0.75)',
       fontFamily: 'Sansation',
-      fontSize: '.9em'
+      fontSize: '.9em',
     }
   }));
   const classes = useStyles();
@@ -82,4 +81,4 @@ const AppNavbar = () => {
   );
 };
 
-export default AppNavbar;
+export default withWidth()(AppNavbar);

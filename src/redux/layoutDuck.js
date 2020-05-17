@@ -1,5 +1,6 @@
 // constants
 const initialState = {
+  isOpen: false,
   widthSidenavOpen: 0,
   widthSidenavClose: 0,
   appSidenavStatus: false
@@ -11,6 +12,7 @@ export const reducerLayout = (state = initialState, action) => {
     case SET_STATUS:
       return {
         ...state,
+        isOpen: action.payload.option,
         appSidenavStatus: action.payload.option,
         widthSidenavOpen: action.payload.widthSidenavOpen,
         widthSidenavClose: action.payload.widthSidenavClose

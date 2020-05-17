@@ -36,7 +36,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CrudTable = ({ url, headers, buttons, render }) => {
-  console.log('COMPONENT CRUD-TAaaBLE');
   const SET_DATA = 'SET_DATA';
   const SET_PAGE = 'SET_PAGE';
   const SET_ITEMS_PER_PAGE = 'SET_ITEMS_PER_PAGE';
@@ -92,7 +91,6 @@ const CrudTable = ({ url, headers, buttons, render }) => {
   };
 
   useEffect(() => {
-    console.log('USEEFFECT-CRUTTABLE');
     getData();
   }, [state.page, state.itemsPerPage]);
 
@@ -109,7 +107,7 @@ const CrudTable = ({ url, headers, buttons, render }) => {
    * @description Esta funcion esta encargada de recargar la grilla
    */
   const refresh = () => {
-    console.log(8888888);
+    console.log('reload');
   };
 
   const handleChangeRowsPerPage = ({ target: { value } }) => {

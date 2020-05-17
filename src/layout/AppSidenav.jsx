@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
@@ -16,19 +16,21 @@ import {
   MenuItem,
   Menu,
   Box,
-  Card
+  Card,
+  withWidth
 } from '@material-ui/core';
 import { AssignmentInd, FolderShared, Folder, FolderOpen } from '@material-ui/icons';
 import { setLogin } from '../redux/userDuck';
 import { setStatusSidenav } from '../redux/layoutDuck';
 import Storage from '../plugins/Storage';
 
-const Sidebar = () => {
+const Sidenav = ({ width }) => {
   const Routes = Storage.get('menu') || [];
   const dispatch = useDispatch();
   const history = useHistory();
-  const { loggedIn, widthSidenavOpen, widthSidenavClose, appSidenavStatus } = useSelector(state => ({
+  const { loggedIn, isOpen, widthSidenavOpen, widthSidenavClose, appSidenavStatus } = useSelector(state => ({
     loggedIn: state.user.loggedIn,
+    isOpen: state.layout.isOpen,
     widthSidenavOpen: state.layout.widthSidenavOpen,
     widthSidenavClose: state.layout.widthSidenavClose,
     appSidenavStatus: state.layout.appSidenavStatus
@@ -143,6 +145,10 @@ const Sidebar = () => {
     }));
   };
 
+  const handleCloseDrawer = () => {
+    dispatch(setStatusSidenav(false));
+  };
+
   const handleCloseUserInfo = () => {
     setState((state) => ({
       ...state,
@@ -164,108 +170,128 @@ const Sidebar = () => {
 
   const classes = useStyles();
 
+  const Options = () => (
+    <Fragment>
+      <List aria-label="header" className={classes.header}>
+        <ListItem
+          style={{ paddingLeft: 10, paddingRight: 10 }}
+        >
+          <Button
+            className={classes.btnUserInfo}
+            aria-controls="user-info"
+            aria-haspopup="true"
+            onClick={handleUserInfo}
+          >
+            { state.title ? state.title.charAt(0) : '' }
+          </Button>
+          <Menu
+            id="user-info"
+            anchorEl={state.popupUserInfo}
+            keepMounted
+            open={Boolean(state.popupUserInfo)}
+            onClose={handleCloseUserInfo}
+            PaperProps={{
+              style: {
+                width: 260
+              }
+            }}
+          >
+            <Card elevation={0} className={classes.card}>
+              <CardContent style={{ padding: 8 }}>
+                <Box display="flex" flexDirection="row" alignItems="center" justifyContent="start">
+                  <Box>
+                    <AssignmentInd className={classes.btnUserInfoCard}/>
+                  </Box>
+                  <Box marginLeft={1}>
+                    <Box display="flex" flexDirection="row" alignItems="center" justifyContent="center">
+                      { state.user && state.user.nombres ? `${state.user.nombres} ${state.user.primer_apellido} ${state.user.segundo_apellido}` : 'USUARIO LOGUEADO S/N' }
+                    </Box>
+                    <Box>{ state.user && state.user.email ? state.user.email : 'email@test.com'}</Box>
+                  </Box>
+                </Box>
+              </CardContent>
+            </Card>
+            <Divider/>
+            <MenuItem className={clsx(classes.logout)} onClick={logout}>
+              <Box mr={1} pt={1}><FolderShared/></Box>
+              <Box>Cerrar Sesion</Box>
+            </MenuItem>
+          </Menu>
+          <ListItemText className={clsx(classes.title)} primary={state.title} />
+        </ListItem>
+      </List>
+      {/* INFORMACION DEL USUARIO */}
+      <section className="user--information">
+        <section className="user--information_logo">
+          { state.user && state.user.nombres ? state.user.nombres.charAt(0) : 'U'}
+        </section>
+        <section className="user--information_name">
+          { state.user && state.user.nombres ? state.user.nombres : 'Usuario S/N'}
+        </section>
+        <section className="user--information_email">
+          { state.user && state.user.email ? state.user.email : 'Email S/N'}
+        </section>
+      </section>
+      <Divider/>
+      <List aria-label="routes" style={{ paddingTop: 1 }}>
+        {Routes.map((item, index) => (
+          <NavLink
+            to={item.url}
+            className={clsx(classes.links)}
+            key={index}
+          >
+            <ListItem
+              className={clsx({
+                [classes.selectItem]: itemSelected === index
+              })}
+              onClick={() => setItemSelected(index)}
+            >
+              <ListItemIcon style={{ minWidth: 35 }}>
+                <Icon className={clsx(classes.icon)} component={itemSelected === index ? FolderOpen : Folder}/>
+              </ListItemIcon>
+              <ListItemText primary={item.label} />
+            </ListItem>
+            <Divider/>
+          </NavLink>
+        ))}
+      </List>
+    </Fragment>
+  );
+
   return (
     loggedIn && <div className={classes.root}>
-      <Drawer
-        elevation={0}
-        className={clsx({
-          [classes.appSidenavOpen]: appSidenavStatus,
-          [classes.appSidenavClose]: !appSidenavStatus,
-        }, 'app--sidenav')}
-        classes={{
-          paper: clsx(classes.appSidenav, {
-            [classes.appSidenavOpen]: appSidenavStatus,
-            [classes.appSidenavClose]: !appSidenavStatus,
-          }, classes.appearance)
-        }}
-        variant="permanent"
-      >
-        <List aria-label="header" className={classes.header}>
-          <ListItem
-            style={{ paddingLeft: 10, paddingRight: 10 }}
+      {
+        ['xs', 'sm'].includes(width) ? (
+          <Drawer
+            anchor="left"
+            open={isOpen}
+            onClose={handleCloseDrawer}
+            classes={{
+              paper: clsx(classes.appSidenav, classes.appearance, 'app--sidenav')
+            }}
           >
-            <Button
-              className={classes.btnUserInfo}
-              aria-controls="user-info"
-              aria-haspopup="true"
-              onClick={handleUserInfo}
-            >
-              { state.title ? state.title.charAt(0) : '' }
-            </Button>
-            <Menu
-              id="user-info"
-              anchorEl={state.popupUserInfo}
-              keepMounted
-              open={Boolean(state.popupUserInfo)}
-              onClose={handleCloseUserInfo}
-              PaperProps={{
-                style: {
-                  width: 260
-                }
-              }}
-            >
-              <Card elevation={0} className={classes.card}>
-                <CardContent style={{ padding: 8 }}>
-                  <Box display="flex" flexDirection="row" alignItems="center" justifyContent="start">
-                    <Box>
-                      <AssignmentInd className={classes.btnUserInfoCard}/>
-                    </Box>
-                    <Box marginLeft={1}>
-                      <Box display="flex" flexDirection="row" alignItems="center" justifyContent="center">
-                        { state.user && state.user.nombres ? `${state.user.nombres} ${state.user.primer_apellido} ${state.user.segundo_apellido}` : 'USUARIO LOGUEADO S/N' }
-                      </Box>
-                      <Box>{ state.user && state.user.email ? state.user.email : 'email@test.com'}</Box>
-                    </Box>
-                  </Box>
-                </CardContent>
-              </Card>
-              <Divider/>
-              <MenuItem className={clsx(classes.logout)} onClick={logout}>
-                <Box mr={1} pt={1}><FolderShared/></Box>
-                <Box>Cerrar Sesion</Box>
-              </MenuItem>
-            </Menu>
-            <ListItemText className={clsx(classes.title)} primary={state.title} />
-          </ListItem>
-        </List>
-        {/* INFORMACION DEL USUARIO */}
-        <section className="user--information">
-          <section className="user--information_logo">
-            { state.user && state.user.nombres ? state.user.nombres.charAt(0) : 'U'}
-          </section>
-          <section className="user--information_name">
-            { state.user && state.user.nombres ? state.user.nombres : 'Usuario S/N'}
-          </section>
-          <section className="user--information_email">
-            { state.user && state.user.email ? state.user.email : 'Email S/N'}
-          </section>
-        </section>
-        <Divider/>
-        <List aria-label="routes" style={{ paddingTop: 1 }}>
-          {Routes.map((item, index) => (
-            <NavLink
-              to={item.url}
-              className={clsx(classes.links)}
-              key={index}
-            >
-              <ListItem
-                className={clsx({
-                  [classes.selectItem]: itemSelected === index
-                })}
-                onClick={() => setItemSelected(index)}
-              >
-                <ListItemIcon style={{ minWidth: 35 }}>
-                  <Icon className={clsx(classes.icon)} component={itemSelected === index ? FolderOpen : Folder}/>
-                </ListItemIcon>
-                <ListItemText primary={item.label} />
-              </ListItem>
-              <Divider/>
-            </NavLink>
-          ))}
-        </List>
-      </Drawer>
+            <Options/>
+          </Drawer>
+        ) : (
+          <Drawer
+            elevation={0}
+            className={clsx({
+              [classes.appSidenavOpen]: appSidenavStatus,
+              [classes.appSidenavClose]: !appSidenavStatus,
+            }, 'app--sidenav')}
+            classes={{
+              paper: clsx(classes.appSidenav, {
+                [classes.appSidenavOpen]: appSidenavStatus,
+                [classes.appSidenavClose]: !appSidenavStatus,
+              }, classes.appearance)
+            }}
+            variant="permanent"
+          >
+            <Options/>
+          </Drawer>)
+      }
     </div>
   );
 };
 
-export default Sidebar;
+export default withWidth()(Sidenav);

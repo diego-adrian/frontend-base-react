@@ -1,5 +1,10 @@
 // Initial State
 const initialState = {
+  Alert: {
+    show: false,
+    text: null,
+    width: null
+  },
   Confirm: {
     show: false,
     text: null,
@@ -25,8 +30,11 @@ const CLOSE_MESSAGE = 'CLOSE_MESSAGE';
 
 const OPEN_CONFIRM = 'OPEN_CONFIRM';
 const CLOSE_CONFIRM = 'CLOSE_CONFIRM';
-// Reducer
 
+const OPEN_ALERT = 'OPEN_ALERT';
+const CLOSE_ALERT = 'CLOSE_ALERT';
+
+// Reducer
 export const reducerPlugins = (state = initialState, action) => {
   switch (action.type) {
     case CLOSE_MESSAGE:
@@ -101,12 +109,44 @@ export const reducerPlugins = (state = initialState, action) => {
         }
       };
     }
+    case OPEN_ALERT: {
+      return {
+        ...state,
+        Alert: {
+          ...state.Alert,
+          show: true,
+          text: action.payload.text,
+          width: action.payload.width
+        }
+      };
+    }
+    case CLOSE_ALERT: {
+      return {
+        ...state,
+        Alert: {
+          ...state.Alert,
+          show: false
+        }
+      };
+    }
     default:
       return state;
   }
 };
 
 // Actions
+export const openAlert = (text = 'Alerta...', width = 360) => ({
+  type: OPEN_ALERT,
+  payload: {
+    text,
+    width
+  }
+});
+
+export const closeAlert = () => ({
+  type: CLOSE_ALERT
+});
+
 export const openConfirm = (text = 'Mensaje...', callbackOk = null, callbackCancel = null, textOk = 'Aceptar', textCancel = 'Cancelar', width = 360) => ({
   type: OPEN_CONFIRM,
   payload: {

@@ -52,7 +52,6 @@ const DialogCustomized = withStyles(() => ({
 }))(Dialog);
 
 const User = () => {
-  console.log('User component');
   const classes = useStyles();
   const dispatch = useDispatch();
   const form = useForm({
@@ -126,7 +125,6 @@ const User = () => {
           email: form.values.email
         };
         const userCreated = await Service.post('usuario', data);
-        console.log(userCreated);
         if (userCreated && userCreated.finalizado) {
           dispatch(MessageSuccess('Usuario exitosamente guardado'));
           handleClose();
@@ -139,16 +137,17 @@ const User = () => {
     }
   };
 
-  const deleteItem = (rows) => {
-    console.log('Delete rows');
-    console.log(rows);
-    dispatch(openConfirm('¿Esta seguro de eliminar el registro?', () => {
-      console.log(7777777);
+  const deleteItem = (data) => {
+    dispatch(openConfirm('¿Esta seguro de eliminar el registro?', async () => {
+      const response = await Service.delete(`usuarios/${data.id}`);
+      if (response && response.finalizado) {
+        dispatch(MessageSuccess('usuario exitosamente eliminado'));
+      } else {
+        dispatch(MessageError(response.mensaje));
+      }
     }));
   };
   const editItem = (rows) => {
-    console.log('Edit rows');
-    console.log(rows);
     const data = {
       user: rows.usuario,
       nombres: rows.persona.nombres,
@@ -300,7 +299,7 @@ const User = () => {
             </Box>
           </DialogContent>
           <DialogActions>
-            <Button variant="contained" color="default" disableElevation onClick={handleClose}>Cancelar</Button>
+            <Button variant="contained" disableElevation onClick={handleClose}>Cancelar</Button>
             <Button variant="contained" color="primary" type="submit">
               { action === 'add' ? 'Crear ' : 'Actualizar ' }
               Usuario

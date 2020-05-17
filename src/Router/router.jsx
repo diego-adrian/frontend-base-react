@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import clsx from 'clsx';
 import { HashRouter as Router, Switch, Route, useHistory } from 'react-router-dom';
-import { Box, Fade } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Box, Fade, makeStyles, withWidth } from '@material-ui/core';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import AppNavbar from '../layout/AppNavbar';
 import AppSidenav from '../layout/AppSidenav';
 import Message from '../plugins/Message';
 import Confirm from '../plugins/Modal/Confirm';
+import Alert from '../plugins/Modal/Alert';
 import Storage from '../plugins/Storage';
 import Routes from './routes';
 import { setLogin } from '../redux/userDuck';
@@ -15,7 +15,7 @@ import { setStatusSidenav } from '../redux/layoutDuck';
 
 const Location = () => Routes.map((item, idx) => <Route key={idx} path={item.path} component={item.component} />);
 
-const AppRouter = () => {
+const AppRouter = ({ width }) => {
   const dispatch = useDispatch();
   const { widthSidenavOpen, widthSidenavClose, appSidenavStatus, loggedIn } = useSelector(state => ({
     widthSidenavOpen: state.layout.widthSidenavOpen,
@@ -63,7 +63,7 @@ const AppRouter = () => {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
-      marginLeft: loggedIn ? widthSidenavClose : 0,
+      marginLeft: loggedIn && !['xs', 'sm'].includes(width) ? widthSidenavClose : 0,
       marginTop: Storage.get('token') ? 50 : 0,
       padding: Storage.get('token') ? 10 : 0
     },
@@ -80,6 +80,7 @@ const AppRouter = () => {
       <AppSidenav/>
       <Message/>
       <Confirm/>
+      <Alert/>
       <Box className={clsx(classes.root, {
         [classes.normalMode]: appSidenavStatus,
         [classes.compressMode]: !appSidenavStatus
@@ -95,4 +96,4 @@ const AppRouter = () => {
   );
 };
 
-export default AppRouter;
+export default withWidth()(AppRouter);

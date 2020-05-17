@@ -6,13 +6,22 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  withStyles
+  withStyles,
+  makeStyles,
+  Box
 } from '@material-ui/core';
+import { WarningOutlined, DoneAll } from '@material-ui/icons';
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import { closeConfirm } from '../../redux/pluginsDuck';
 
+const useStyles = makeStyles((theme) => ({
+  iconWarning: {
+    color: theme.palette.warning.main
+  }
+}));
 
 const Confirm = () => {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const { show, text, width, textOk, textCancel, callbackOk, callbackCancel } = useSelector(state => ({
     show: state.plugins.Confirm.show,
@@ -46,20 +55,27 @@ const Confirm = () => {
 
   return (
     <DialogCustomized
+      disableEscapeKeyDown
+      disableBackdropClick
       open={show}
       onClose={handleClose}
     >
-      <DialogTitle>Confirmar</DialogTitle>
+      <DialogTitle>
+        <Box display="flex" fontSize={15} flexDirection="row" alignItems="center" justifyItems="start">
+          <WarningOutlined className={classes.iconWarning} />
+          Confirmar
+        </Box>
+      </DialogTitle>
       <DialogContent>
         <DialogContentText>
           { text }
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleCancel} color="primary">
+        <Button variant="text" onClick={handleCancel} disableElevation>
           { textCancel }
         </Button>
-        <Button onClick={handleAccept} color="primary" autoFocus>
+        <Button startIcon={<DoneAll/>} onClick={handleAccept} variant="contained" color="secondary" autoFocus>
           { textOk }
         </Button>
       </DialogActions>
