@@ -53,7 +53,18 @@ REACT_APP_ONBEFOREUNLOAD=false
 
 ## Generar archivos minificados
 
-1. Ejecutar el siguiente comando y esperar los resultados, debe generarse la carpeta `build`
+1. Si los archivos se serviran desde un subdominio, debemos adicionar en el package.json el atributo `homepage`
+
+```sh
+$ "name": "frontend-base-react",
+  "description": "Frontend base realizado con react en su última version con react, hooks, material-ui y otras tecnologías",
+  "author": "dbarra@agetic.gob.bo",
+  "version": "1.0.0",
+  "private": false,
+  "homepage": "https://test.agetic.gob.bo/SUB_DOMINIO/"
+```
+
+2. Ejecutar el siguiente comando y esperar los resultados, debe generarse la carpeta `build`
 
 ```sh
 $ npm run build
