@@ -65,8 +65,18 @@ const Sidenav = ({ width }) => {
       }),
       overflowX: 'hidden',
       width: widthSidenavClose,
+      '& .user--information': {
+        '& section': {
+          display: 'none'
+        }
+      },
       '&:hover': {
-        width: widthSidenavOpen
+        width: widthSidenavOpen,
+        '& .user--information': {
+          '& section': {
+            display: 'block'
+          }
+        }
       }
     },
     appearance: {
