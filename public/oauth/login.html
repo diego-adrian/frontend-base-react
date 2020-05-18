@@ -39,7 +39,7 @@
               window.location = data.url;
               window.localStorage.setItem(config.appName + '_error', JSON.stringify(data.mensaje));
             } else {
-              window.localStorage.setItem(config.appName + '_menu', JSON.stringify(data.menu));
+              window.localStorage.setItem(config.appName + '_menu', JSON.stringify([{ url: 'dashboard', label: 'Dashboard' }].concat(data.menu ? data.menu : [])));
               window.localStorage.setItem(config.appName + '_token', data.token);
               window.localStorage.setItem(config.appName + '_sidenav', JSON.stringify(true));
               window.localStorage.setItem(config.appName + '_permissions', JSON.stringify(data.permisos));

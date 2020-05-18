@@ -4,6 +4,7 @@ import history from '../../plugins/history';
 import store from '../../redux/store';
 import { setLogin } from '../../redux/userDuck';
 import { setStatusSidenav } from '../../redux/layoutDuck';
+import { MessageError } from '../../redux/pluginsDuck';
 
 const Auth = {
   getCode: async () => {
@@ -17,7 +18,7 @@ const Auth = {
       const response = await axios(request);
       window.location.href = new URL(response.data.url);
     } catch (error) {
-      console.error(error.message);
+      store.dispatch(MessageError(error.message));
     }
   },
   logout: () => {

@@ -234,7 +234,7 @@ const Sidenav = ({ width }) => {
       </section>
       <Divider/>
       <List aria-label="routes" style={{ paddingTop: 1 }}>
-        {Routes.map((item, index) => (
+        {Array.isArray(Routes) && Routes.length > 0 ? (Routes.map((item, index) => (
           <NavLink
             to={item.url}
             className={clsx(classes.links)}
@@ -253,7 +253,7 @@ const Sidenav = ({ width }) => {
             </ListItem>
             <Divider/>
           </NavLink>
-        ))}
+        ))) : null }
       </List>
     </Fragment>
   );

@@ -14,7 +14,7 @@ import Routes from './routes';
 import { setLogin } from '../redux/userDuck';
 import { setStatusSidenav } from '../redux/layoutDuck';
 
-const Location = () => Routes.map((item, idx) => <Route key={idx} path={item.path} component={item.component} />);
+const Location = () => (Routes || []).map((item, idx) => <Route key={idx} path={item.path} component={item.component} />);
 
 const AppRouter = ({ width }) => {
   const dispatch = useDispatch();
@@ -33,8 +33,10 @@ const AppRouter = ({ width }) => {
       dispatch(setLogin(true));
       dispatch(setStatusSidenav(true));
       const menu = Storage.get('menu');
-      if (!history.location.pathname.includes(menu[0].url)) {
+      if (Array.isArray(menu) && !history.location.pathname.includes(menu[0].url)) {
         history.push(menu[0].url);
+      } else {
+        history.push('/dashboard');
       }
     } else {
       dispatch(setLogin(false));
