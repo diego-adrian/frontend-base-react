@@ -197,7 +197,6 @@ const CrudTable = ({ url, headers, buttons, render, filters }) => {
         value
       }
     });
-    console.log(name, value);
   };
 
   const handleFilters = () => {
@@ -213,7 +212,6 @@ const CrudTable = ({ url, headers, buttons, render, filters }) => {
    * @description Esta funcion esta encargada de recargar la grilla
    */
   const refresh = () => {
-    console.log('reload');
     distpachReducer({
       type: SET_REFRESH
     });
@@ -252,7 +250,7 @@ const CrudTable = ({ url, headers, buttons, render, filters }) => {
               <TableCell colSpan={headers.length} className={classes.spacing}>
                 <Box display="flex" flexDirection="row" alignItems="center" justifyContent="start">
                   { buttons }
-                  <IconButton color="secondary" onClick={refresh}>
+                  <IconButton id="btn-refresh" color="secondary" onClick={refresh}>
                     <RefreshOutlined />
                   </IconButton>
                   <IconButton color="secondary" onClick={handleFilters}>

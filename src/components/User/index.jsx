@@ -21,6 +21,7 @@ import { MessageError, MessageSuccess, openConfirm } from '../../redux/pluginsDu
 import Service from '../../plugins/Service';
 import Datetime from '../../plugins/datetime';
 import CrudTable from '../../plugins/CrudTable';
+import CrudTableActions from '../../plugins/CrudTable/actions';
 import { useForm } from '../../plugins/Hooks';
 
 const useStyles = makeStyles((theme) => ({
@@ -134,6 +135,7 @@ const User = () => {
         const userCreated = await Service.post('usuario', data);
         if (userCreated && userCreated.finalizado) {
           dispatch(MessageSuccess('Usuario exitosamente guardado'));
+          CrudTableActions.updateList();
           handleClose();
         } else {
           throw new Error(userCreated.mensaje);
@@ -149,6 +151,7 @@ const User = () => {
       const response = await Service.delete(`usuarios/${data.id}`);
       if (response && response.finalizado) {
         dispatch(MessageSuccess('usuario exitosamente eliminado'));
+        CrudTableActions.updateList();
       } else {
         dispatch(MessageError(response.mensaje));
       }
