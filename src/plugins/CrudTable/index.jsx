@@ -22,7 +22,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { MessageError } from '../../redux/pluginsDuck';
 import Service from '../Service';
 
-
 const CrudTable = ({ url, headers, buttons, render, filters }) => {
   const SET_DATA = 'SET_DATA';
   const SET_PAGE = 'SET_PAGE';

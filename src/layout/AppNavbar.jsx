@@ -8,7 +8,7 @@ import '../assets/scss/AppNabvar.scss';
 
 const AppNavbar = ({ width }) => {
   const dispatch = useDispatch();
-  const { loggedIn, widthSidenavOpen, appSidenavStatus, widthSidenavClose } = useSelector(state => ({
+  const { loggedIn, widthSidenavOpen, appSidenavStatus, widthSidenavClose } = useSelector((state) => ({
     loggedIn: state.user.loggedIn,
     widthSidenavOpen: state.layout.widthSidenavOpen,
     widthSidenavClose: state.layout.widthSidenavClose,

@@ -58,7 +58,9 @@
       "no-restricted-globals": "off",
       "no-async-promise-executor": "off",
       "consistent-return": "off",
-      "no-param-reassign": "off"
+      "no-param-reassign": "off",
+      "no-trailing-spaces": "off",
+      "react/jsx-one-expression-per-line": "off"
     }
   },
   "browserslist": {

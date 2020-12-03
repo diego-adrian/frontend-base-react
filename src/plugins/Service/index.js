@@ -1,4 +1,4 @@
-
+/* eslint-disable */
 import axios from 'axios';
 import Util from '../utils';
 import Storage from '../Storage';

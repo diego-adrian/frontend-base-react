@@ -158,7 +158,7 @@ const Login = () => {
           throw new Error(response.mensaje);
         }
       } else {
-        setFormState(formState => ({
+        setFormState((formState) => ({
           ...formState,
           errors: {
             user: !(formState.values.user || '').length > 0,

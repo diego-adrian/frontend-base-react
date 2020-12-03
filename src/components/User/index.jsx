@@ -197,7 +197,7 @@ const User = () => {
                     key={header.key}
                     align={header.align}
                   >
-                    { header.key === 'actions' ? <Box display="flex" flexDirection="row" alignItems="center" justifyItems="center">
+                    { header.key === 'actions' ? <Box display="flex" flexDirection="row" alignItems="center" justifyItems="center"> : 
                       <Tooltip placement="bottom" title="Eliminar registro">
                         <IconButton className={classes.paddingButton} onClick={() => deleteItem(row)}>
                           <Delete className={classes.delete} />
