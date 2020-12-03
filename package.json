@@ -60,7 +60,8 @@
       "consistent-return": "off",
       "no-param-reassign": "off",
       "no-trailing-spaces": "off",
-      "react/jsx-one-expression-per-line": "off"
+      "react/jsx-one-expression-per-line": "off",
+      "import/no-cycle": "off"
     }
   },
   "browserslist": {
