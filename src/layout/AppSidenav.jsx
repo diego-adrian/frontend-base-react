@@ -17,9 +17,10 @@ import {
   Menu,
   Box,
   Card,
-  withWidth
+  withWidth,
+  Collapse
 } from '@material-ui/core';
-import { AssignmentInd, FolderShared, Folder, FolderOpen } from '@material-ui/icons';
+import { AssignmentInd, FolderShared, Folder, FolderOpen, Star } from '@material-ui/icons';
 import { setLogin } from '../redux/userDuck';
 import { setStatusSidenav } from '../redux/layoutDuck';
 import Storage from '../plugins/Storage';
@@ -39,7 +40,8 @@ const Sidenav = ({ width }) => {
   const [state, setState] = useState({
     popupUserInfo: null,
     title: 'frontend base',
-    user: Storage.getUser()
+    user: Storage.getUser(),
+    submenu: {}
   });
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -148,6 +150,17 @@ const Sidenav = ({ width }) => {
     }
   }));
 
+  const setItem = (item, position) => {
+    setItemSelected(position);
+    setState((state) => ({
+      ...state,
+      submenu: {
+        ...state.submenu,
+        [item.url]: !state.submenu[item.url]
+      }
+    }));
+  };
+
   const handleUserInfo = (event) => {
     setState((state) => ({
       ...state,
@@ -254,13 +267,25 @@ const Sidenav = ({ width }) => {
               className={clsx({
                 [classes.selectItem]: itemSelected === index
               })}
-              onClick={() => setItemSelected(index)}
+              onClick={() => setItem(item, index)}
             >
               <ListItemIcon style={{ minWidth: 35 }}>
                 <Icon className={clsx(classes.icon)} component={itemSelected === index ? FolderOpen : Folder}/>
               </ListItemIcon>
               <ListItemText primary={item.label} />
             </ListItem>
+            { item.submenu ? (
+              <Collapse in={state.submenu[item.url]} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                  <ListItem button>
+                    <ListItemIcon>
+                      <Star />
+                    </ListItemIcon>
+                    <ListItemText primary="Starred" />
+                  </ListItem>
+                </List>
+              </Collapse>
+            ) : null }
             <Divider/>
           </NavLink>
         ))) : null }
