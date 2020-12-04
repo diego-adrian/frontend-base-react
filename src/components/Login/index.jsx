@@ -137,16 +137,16 @@ const Login = () => {
     try {
       event.preventDefault();
       if ((formState.values.user || '').length > 0 && (formState.values.password || '').length > 0) {
-        const response = await Service.post('public/login', {
+        const response = await Service.post('auth', {
           usuario: formState.values.user,
-          password: formState.values.password
+          contrasena: formState.values.password
         });
         if (!response) throw new Error('Existen problemas de conexión. Por favor revise su configuración a Internet.');
-        if (response.finalizado) {
-          Storage.set('user', response.datos.usuario);
-          Storage.set('roles', response.datos.roles);
-          Storage.set('token', response.datos.token);
-          Storage.set('menu', [{ url: 'dashboard', label: 'Dashboard' }].concat(response.datos.menu));
+        if (!response.error) {
+          Storage.set('user', response.usuario);
+          Storage.set('roles', response.roles);
+          Storage.set('token', response.token);
+          Storage.set('menu', [{ url: 'dashboard', label: 'Dashboard' }].concat(response.menu));
           Storage.set('sidenav', true);
           dispatch(MessageSuccess('Acceso exitosamente correcto'));
           dispatch(setLogin(true));
@@ -155,7 +155,7 @@ const Login = () => {
             history.push('/dashboard');
           }
         } else {
-          throw new Error(response.mensaje);
+          throw new Error(response.error);
         }
       } else {
         setFormState((formState) => ({
